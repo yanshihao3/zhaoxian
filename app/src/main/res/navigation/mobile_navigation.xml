@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.zq.zhaoxian.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/app_fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_workbench"
+        android:name="com.zq.zhaoxian.ui.workbench.WorkbenchFragment"
+        android:label="@string/title_workbench"
+        tools:layout="@layout/app_fragment_alarm" />
+
+
+    <fragment
+        android:id="@+id/navigation_my"
+        android:name="com.zq.zhaoxian.ui.my.MyFragment"
+        android:label="@string/title_my"
+        tools:layout="@layout/app_fragment_workbench" />
+</navigation>

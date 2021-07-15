@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MenuItemView">
+        <!--标题-->
+        <attr name="menu_title" format="string" />
+        <!--菜单图标-->
+        <attr name="menu_icon" format="reference" />
+
+    </declare-styleable>
+
+    <declare-styleable name="ToolbarView">
+        <!--标题-->
+        <attr name="toolbar_title" format="string" />
+        <!--返回图标-->
+        <attr name="toolbar_back" format="reference" />
+        <!--是否显示返回图标-->
+        <attr name="toolbar_back_visibility">
+            <!-- Visible on screen; the default value. -->
+            <enum name="visible" value="0" />
+            <!-- Not displayed, but taken into account during layout (space is left for it). -->
+            <enum name="invisible" value="1" />
+            <!-- Completely hidden, as if the view had not been added. -->
+            <enum name="gone" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="UserMenuItemView">
+        <!--标题-->
+        <attr name="title" format="string" />
+        <!--菜单图标-->
+        <attr name="icon" format="reference" />
+
+    </declare-styleable>
+
+
+</resources>

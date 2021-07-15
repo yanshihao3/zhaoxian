@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.zq.zhaoxian.ui.workbench.notice.NoticeModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{data.ZQIOT__title__CST}"
+            android:textColor="#ff333333"
+            android:textSize="14sp"
+            tools:text="标题" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="@{data.ZQIOT__time__CST}"
+            android:textColor="#ff999999"
+            android:textSize="10sp"
+            tools:text="2021/06/02 12:31" />
+
+
+        <com.ctetin.expandabletextviewlibrary.ExpandableTextView
+            android:id="@+id/expanded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#8a000000"
+            android:textSize="12sp"
+            app:ep_contract_color="@color/bottom_select"
+            app:ep_contract_text="收回"
+            app:ep_expand_color="@color/bottom_select"
+            app:ep_expand_text="全部"
+            app:ep_max_line="2"
+            app:ep_need_always_showright="true"
+            app:ep_need_animation="true"
+            app:ep_need_contract="true"
+            app:ep_need_expand="true" />
+
+
+    </LinearLayout>
+</layout>
