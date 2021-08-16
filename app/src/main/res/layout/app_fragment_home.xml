@@ -26,34 +26,39 @@
             app:toolbar_back_visibility="gone"
             app:toolbar_title="智慧综合馆" />
 
-        <androidx.core.widget.NestedScrollView
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <com.scwang.smart.refresh.header.MaterialHeader
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content" />
 
-                <com.youth.banner.Banner
-                    android:id="@+id/banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/card_notice"
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="16dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="50dp"
-                    app:cardElevation="8dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp" />
+
 
                     <LinearLayout
+                        android:id="@+id/card_notice"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/app_shape_home_notice"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -89,130 +94,210 @@
                             app:srcCompat="@drawable/app_ic_arrow_right" />
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="工单任务"
-                        android:textColor="#ff000000"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <RelativeLayout
+                        <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:scaleType="fitXY"
-                                app:srcCompat="@mipmap/app_ic_home_pending" />
-
-                            <TextView
-                                android:id="@+id/pending_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="60dp"
-                                android:layout_marginTop="19dp"
-                                android:text="未完成"
-                                android:textColor="#ffffffff"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/pending_title"
-                                android:layout_marginStart="60dp"
-                                android:text="2"
-                                android:textColor="#ffffffff"
-                                android:textSize="16sp" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:scaleType="fitXY"
-                                app:srcCompat="@mipmap/app_ic_home_finish" />
-
-                            <TextView
-                                android:id="@+id/finish_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="60dp"
-                                android:layout_marginTop="19dp"
-                                android:text="已完成"
-                                android:textColor="#ffffffff"
-                                android:textSize="10sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/finish_title"
-                                android:layout_marginStart="60dp"
-                                android:text="6"
-                                android:textColor="#ffffffff"
-                                android:textSize="16sp" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="164dp"
-                        android:layout_height="190dp"
-                        android:layout_marginStart="8dp"
-                        android:padding="0dp"
-                        app:cardCornerRadius="8dp">
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="排查任务"
+                            android:textColor="#ff000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@mipmap/app_ic_home_weather"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="6dp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:id="@+id/unfinnish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="@mipmap/app_ic_home_pending" />
+
+                                <TextView
+                                    android:id="@+id/pending_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="80dp"
+                                    android:layout_marginTop="19dp"
+                                    android:text="未完成"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/pending_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/pending_title"
+                                    android:layout_marginStart="80dp"
+                                    android:text="0"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+
+
+                            <RelativeLayout
+                                android:id="@+id/finnish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="@mipmap/app_ic_home_finish" />
+
+                                <TextView
+                                    android:id="@+id/finish_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="80dp"
+                                    android:layout_marginTop="19dp"
+                                    android:text="已完成"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/finish_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/finish_title"
+                                    android:layout_marginStart="80dp"
+                                    android:text="0"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="告警任务"
+                            android:textColor="#ff000000"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="6dp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:id="@+id/alarm_unfinnish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="@mipmap/app_ic_home_pending" />
+
+                                <TextView
+                                    android:id="@+id/alarm_pending_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="80dp"
+                                    android:layout_marginTop="19dp"
+                                    android:text="未完成"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/alarm_pending_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/alarm_pending_title"
+                                    android:layout_marginStart="80dp"
+                                    android:text="0"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/alarm_finnish"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleType="fitXY"
+                                    app:srcCompat="@mipmap/app_ic_home_finish" />
+
+                                <TextView
+                                    android:id="@+id/alarm_finish_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="80dp"
+                                    android:layout_marginTop="19dp"
+                                    android:text="已完成"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="10sp" />
+
+                                <TextView
+                                    android:id="@+id/alarm_finish_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/alarm_finish_title"
+                                    android:layout_marginStart="80dp"
+                                    android:text="0"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/app_ic_home_weather">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="27dp"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="28dp"
                                 android:text="赵县"
                                 android:textColor="#ffffffff"
                                 android:textSize="12sp" />
@@ -220,6 +305,7 @@
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -239,13 +325,23 @@
                                     android:textColor="#ffffffff"
                                     android:textSize="21sp" />
                             </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="26dp"
+                            android:gravity="right"
+                            android:orientation="vertical">
 
                             <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/weather_image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="27dp"
-                                android:layout_marginTop="8dp"
-                                android:visibility="invisible"
+                                android:layout_marginTop="24dp"
+                                android:visibility="visible"
                                 app:srcCompat="@mipmap/app_ic_weather_cloudy_to_sunny" />
 
                             <TextView
@@ -277,17 +373,22 @@
                                 android:textColor="#ffffffff"
                                 android:textSize="10sp" />
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+
+
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@color/white"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
                             android:text="生活资讯"
                             android:textColor="#ff000000"
                             android:textSize="14sp"
@@ -297,12 +398,12 @@
                             android:id="@+id/recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp" />
+                            android:layout_marginTop="16dp"
+                            android:overScrollMode="never" />
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-
-        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

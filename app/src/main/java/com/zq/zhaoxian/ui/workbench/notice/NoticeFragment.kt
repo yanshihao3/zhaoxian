@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.tencent.mmkv.MMKV
 import com.zq.base.decoration.SpacesItemDecoration
 
 import com.zq.base.fragment.BaseLazyFragment
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentNoticeBinding
 import com.zq.zhaoxian.http.model.UserInfo
@@ -39,11 +39,9 @@ class NoticeFragment private constructor() :
     }
 
     override fun onFragmentFirstVisible() {
-        val boolean = SharedPreferencesUtils.init(context)
-            .getBoolean("isLogin")
+        val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
         if (boolean) {
-            val string = SharedPreferencesUtils.init(context)
-                .getString("userInfo")
+            val string = MMKV.defaultMMKV().decodeString("userInfo")
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 id = info.id
@@ -79,17 +77,8 @@ class NoticeFragment private constructor() :
         adapter.setExpandListener(object : ExpandStatusListener {
             override fun expend(position: Int) {
                 val noticeModel = adapter.data[position]
-                val boolean = SharedPreferencesUtils.init(context)
-                    .getBoolean("isLogin")
-                if (boolean) {
-                    val string = SharedPreferencesUtils.init(context)
-                        .getString("userInfo")
-                    if (string != null) {
-                        val info = Gson().fromJson(string, UserInfo.Info::class.java)
-                        mViewModel.updateNotic(info.id, noticeModel.NoticeId)
-                    }
+                mViewModel.updateNotic(id, noticeModel.NoticeId)
 
-                }
             }
         })
     }

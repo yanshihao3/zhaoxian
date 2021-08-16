@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class LoginDialogFragment @Inject constructor() : BaseDialogFragment() {
 
-    override fun getLayoutId(): Int = R.layout.app_dialog_commit
+    override fun getLayoutId(): Int = R.layout.app_dialog_login
 
 
     override fun initViews(v: View?) {

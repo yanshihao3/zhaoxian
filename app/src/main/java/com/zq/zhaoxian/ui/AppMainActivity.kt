@@ -7,14 +7,16 @@ import com.hjq.toast.ToastUtils
 import com.zq.base.activity.BaseActivity
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.application.MyActivityManager
+import com.zq.zhaoxian.common.MessageEvent
 import com.zq.zhaoxian.databinding.AppActivityMainBinding
 import com.zq.zhaoxian.ui.home.HomeFragment
 import com.zq.zhaoxian.ui.my.MyFragment
 import com.zq.zhaoxian.ui.workbench.WorkbenchFragment
 import com.zq.zhaoxian.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Runnable
+import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
-import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
@@ -52,7 +54,7 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
     }
 
     override fun initData() {
-       // mViewModel.load()
+        // mViewModel.load()
     }
 
     private fun switchFragment(from: Fragment, to: Fragment) {
@@ -65,9 +67,19 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
                 transaction.hide(from)
                 transaction.show(to).commit()
             }
+            if (to is HomeFragment) {
+                EventBus.getDefault().post(MessageEvent("home", "0"))
+            }
 
         }
     }
+
+    fun jumpFragment(type: Int) {
+        mDataBind.bottomView.selectedItemId = R.id.navigation_workbench
+
+      //  mDataBind.bottomView.postDelayed(Runnable { workbenchFragment.switchTab(type) }, 100)
+    }
+
     private var exitTime: Long = 0 //退出activity计时
 
     //双击退出app事件

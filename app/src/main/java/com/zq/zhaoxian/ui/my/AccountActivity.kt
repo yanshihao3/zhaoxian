@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.hjq.toast.ToastUtils
+import com.tencent.mmkv.MMKV
 import com.zq.base.activity.BaseNoModelActivity
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.base.view.BaseDialogFragment
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppActivityAccountBinding
@@ -67,8 +67,9 @@ class LogoutDialogFragment @Inject constructor() : BaseDialogFragment() {
 
         v?.findViewById<TextView>(R.id.commit)?.setOnClickListener {
             //退出登录
-            SharedPreferencesUtils.init(context)
-                .putBoolean("isLogin", false)
+            val defaultMMKV = MMKV.defaultMMKV()
+            defaultMMKV.encode("isLogin", false)
+
             dismiss()
             if (::logoutListener.isInitialized) {
                 logoutListener.logout()

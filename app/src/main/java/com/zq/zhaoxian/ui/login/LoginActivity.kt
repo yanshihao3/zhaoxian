@@ -6,8 +6,8 @@ import android.view.KeyEvent
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import com.hjq.toast.ToastUtils
+import com.tencent.mmkv.MMKV
 import com.zq.base.activity.BaseNoModelActivity
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.application.MyActivityManager
 import com.zq.zhaoxian.databinding.AppActivityLoginBinding
@@ -74,11 +74,11 @@ class LoginActivity : BaseNoModelActivity<AppActivityLoginBinding>() {
                     if (it.result.list.isNotEmpty()) {
                         ToastUtils.show("登录成功")
                         //登录成功
-                        SharedPreferencesUtils.init(mActivityContext).putBoolean("isLogin", true)
-                            .putString("phone", phone)
-                            .putString(
-                                "userInfo", Gson().toJson(it.result.list[0])
-                            )
+                        val mmkv = MMKV.defaultMMKV()
+                        mmkv.encode("isLogin",true)
+                        mmkv.encode("phone",phone)
+                        mmkv.encode("userInfo",Gson().toJson(it.result.list[0]))
+
                         startActivity(Intent(mActivityContext, AppMainActivity::class.java))
                         finish()
                     }

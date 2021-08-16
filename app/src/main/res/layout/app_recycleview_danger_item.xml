@@ -50,7 +50,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="@{data.ZQIOT__dutyPeople__CST}"
+                android:text="@{data.ZQIOT__checkPeople__CST}"
                 android:textColor="#8a000000"
                 android:textSize="12sp" />
         </RelativeLayout>

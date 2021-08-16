@@ -3,14 +3,13 @@ package com.zq.zhaoxian.ui.workbench
 import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.tencent.mmkv.MMKV
 import com.zq.base.decoration.SpacesItemDecoration
 import com.zq.base.fragment.BaseLazyFragment
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentPendingBinding
 import com.zq.zhaoxian.http.model.UserInfo
-import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerActivity
-import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerModel
+import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerHandleActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -77,7 +76,7 @@ class HandleFragment : BaseLazyFragment<PendingViewModel, AppFragmentPendingBind
         setLoadSir(mDataBind.root)
         adapter.setOnItemChildClickListener { adapter, view, position ->
             val workbenchModel = dataList[position]
-            val intent = Intent(context, DangerActivity::class.java)
+            val intent = Intent(context, DangerHandleActivity::class.java)
             intent.putExtra("data", workbenchModel)
             startActivityForResult(intent, 0)
 //            val workbenchModel = dataList[position]
@@ -87,11 +86,9 @@ class HandleFragment : BaseLazyFragment<PendingViewModel, AppFragmentPendingBind
     }
 
     override fun onFragmentFirstVisible() {
-        val boolean = SharedPreferencesUtils.init(context)
-            .getBoolean("isLogin")
+        val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
         if (boolean) {
-            val string = SharedPreferencesUtils.init(context)
-                .getString("userInfo")
+            val string = MMKV.defaultMMKV().decodeString("userInfo")
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 userId = info.portalUser

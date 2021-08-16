@@ -3,13 +3,14 @@ package com.zq.zhaoxian.ui
 
 import android.content.Intent
 import com.hjq.permissions.Permission
+import com.tencent.mmkv.MMKV
 import com.zq.base.activity.BasePermissionActivity
 import com.zq.base.permission.RequestPermissionListener
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppActivitySplashBinding
 import com.zq.zhaoxian.ui.login.LoginActivity
 import com.zq.zhaoxian.viewmodel.SplashViewModel
+
 
 class SplashActivity : BasePermissionActivity<SplashViewModel, AppActivitySplashBinding>(),
     RequestPermissionListener {
@@ -48,8 +49,8 @@ class SplashActivity : BasePermissionActivity<SplashViewModel, AppActivitySplash
 
     private fun toMain() {
         mViewModel.load()
-        val boolean = SharedPreferencesUtils.init(mActivityContext)
-            .getBoolean("isLogin")
+        val kv = MMKV.defaultMMKV()
+        val boolean = kv.decodeBool("isLogin", false)
         if (boolean) {
             startActivity(Intent(this, AppMainActivity::class.java))
         } else {

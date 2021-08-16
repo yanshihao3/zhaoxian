@@ -1,6 +1,7 @@
 package com.zq.zhaoxian.application
 
 
+import com.tencent.mmkv.MMKV
 import com.zq.base.BaseApplication
 import com.zq.base.network.HeaderInterceptor
 import com.zq.base.network.HttpLogInterceptor
@@ -40,5 +41,7 @@ class MyApplication : BaseApplication() {
             .setOkHttpClient(okHttpClient).init()
 
         registerActivityLifecycleCallbacks(MyActivityManager.getInstance())
+
+        MMKV.initialize(this)
     }
 }

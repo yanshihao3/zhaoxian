@@ -33,6 +33,8 @@ class HomeNetWork {
 
     suspend fun updateNotic(body: RequestBody) = mNoticeService.updateNotic(body)
 
+    suspend fun queryHomeInfo(body: RequestBody) = mNoticeService.queryHomeInfo(body)
+
     suspend fun queryTaskinfoByPersonId(body: RequestBody) = mNoticeService.queryTaskinfoByPersonId(body)
 
     suspend fun queryhidderInfoBytaskId(body: RequestBody) = mNoticeService.queryhidderInfoBytaskId(body)

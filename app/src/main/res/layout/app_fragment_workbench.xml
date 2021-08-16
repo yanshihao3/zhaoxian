@@ -20,227 +20,72 @@
             app:toolbar_title="工作台" />
 
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="51dp"
-            app:tabIndicatorColor="#0095FF"
-            app:tabIndicatorFullWidth="false"
-            app:tabSelectedTextColor="#0095FF"
-            app:tabTextAppearance="@style/TabLayoutTextStyle" />
-
-        <View
-            android:id="@+id/line2"
-            android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:background="@color/line2_color" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <!--        <androidx.appcompat.widget.AppCompatTextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="16dp"-->
-        <!--            android:text="场馆安防"-->
-        <!--            android:textColor="#ff000000"-->
-        <!--            android:textSize="14sp" />-->
-
-        <!--        <LinearLayout-->
+        <!--        <com.google.android.material.tabs.TabLayout-->
+        <!--            android:id="@+id/tabLayout"-->
         <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="18dp"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:orientation="horizontal">-->
-
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:id="@+id/union_dispatch"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/app_ic_workbench_dispatch"-->
-        <!--                app:menu_title="联合调度" />-->
-
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:id="@+id/dispatch_result"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/app_ic_workbench_result"-->
-        <!--                app:menu_title="调度结果" />-->
-
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/app_ic_workbench_person"-->
-        <!--                app:menu_title="人员调度" />-->
-
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:id="@+id/appointment"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/app_ic_workbench_appointment"-->
-        <!--                app:menu_title="预约申请" />-->
-        <!--        </LinearLayout>-->
+        <!--            android:layout_height="51dp"-->
+        <!--            app:tabIndicatorColor="#0095FF"-->
+        <!--            app:tabIndicatorFullWidth="false"-->
+        <!--            app:tabSelectedTextColor="#0095FF"-->
+        <!--            app:tabTextAppearance="@style/TabLayoutTextStyle" />-->
 
         <!--        <View-->
+        <!--            android:id="@+id/line2"-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="8dp"-->
-        <!--            android:layout_marginTop="12dp"-->
         <!--            android:background="@color/line2_color" />-->
 
-        <!--        <androidx.appcompat.widget.AppCompatTextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="16dp"-->
-        <!--            android:text="设施运维"-->
-        <!--            android:textColor="#ff000000"-->
-        <!--            android:textSize="14sp" />-->
-
-        <!--        <LinearLayout-->
+        <!--        <androidx.viewpager2.widget.ViewPager2-->
+        <!--            android:id="@+id/viewPager"-->
         <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="18dp"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:orientation="horizontal">-->
+        <!--            android:layout_height="match_parent" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="任务"
+            android:textColor="#ff000000"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:id="@+id/facilities"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/ic_launcher"-->
-        <!--                app:menu_title="设施点检" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal">
 
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/ic_launcher"-->
-        <!--                app:menu_title="设施点检" />-->
+            <com.zq.zhaoxian.view.MenuItemView
+                android:id="@+id/work"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                app:menu_icon="@mipmap/app_ic_workbanch_work"
+                app:menu_title="排查任务" />
 
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/ic_launcher"-->
-        <!--                app:menu_title="设施点检" />-->
+            <com.zq.zhaoxian.view.MenuItemView
+                android:layout_width="0dp"
+                android:id="@+id/alarm"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                app:menu_icon="@mipmap/app_ic_workbench_alarm"
+                app:menu_title="告警任务" />
 
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/ic_launcher"-->
-        <!--                app:menu_title="工单任务" />-->
-        <!--        </LinearLayout>-->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="18dp"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:orientation="horizontal">-->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+        </LinearLayout>
 
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/ic_launcher"-->
-        <!--                app:menu_title="维修记录" />-->
 
-        <!--            <View-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="0dp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center" />-->
-
-        <!--            <View-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="0dp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center" />-->
-
-        <!--            <View-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="0dp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center" />-->
-        <!--        </LinearLayout>-->
-
-        <!--        <View-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="8dp"-->
-        <!--            android:layout_marginTop="12dp"-->
-        <!--            android:background="@color/line2_color" />-->
-
-        <!--        <androidx.appcompat.widget.AppCompatTextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="16dp"-->
-        <!--            android:text="其他服务"-->
-        <!--            android:textColor="#ff000000"-->
-        <!--            android:textSize="14sp" />-->
-
-        <!--        <LinearLayout-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginStart="16dp"-->
-        <!--            android:layout_marginTop="18dp"-->
-        <!--            android:layout_marginEnd="16dp"-->
-        <!--            android:orientation="horizontal">-->
-
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:id="@+id/notice"-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/app_ic_workbench_notice"-->
-        <!--                app:menu_title="通知公告" />-->
-
-        <!--            <com.zq.zhaoxian.view.MenuItemView-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                app:menu_icon="@mipmap/app_ic_workbench_complaint"-->
-        <!--                app:menu_title="投诉建议" />-->
-
-        <!--            <View-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="0dp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center" />-->
-
-        <!--            <View-->
-        <!--                android:layout_width="0dp"-->
-        <!--                android:layout_height="0dp"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center" />-->
-        <!--        </LinearLayout>-->
-
-        <!--        <View-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_marginTop="12dp"-->
-        <!--            android:background="@color/line2_color" />-->
     </LinearLayout>
 </layout>

@@ -9,5 +9,5 @@ package com.zq.zhaoxian.common
  *
  * @create: 2021-07-12 16:45
  **/
-class MessageEvent {
+class MessageEvent(val type: String, val param: String) {
 }

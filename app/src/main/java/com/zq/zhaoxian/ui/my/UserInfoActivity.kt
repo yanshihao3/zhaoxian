@@ -1,8 +1,8 @@
 package com.zq.zhaoxian.ui.my
 
 import com.google.gson.Gson
+import com.tencent.mmkv.MMKV
 import com.zq.base.activity.BaseNoModelActivity
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppActivityUserInfoBinding
 import com.zq.zhaoxian.http.model.UserInfo
@@ -15,8 +15,8 @@ class UserInfoActivity : BaseNoModelActivity<AppActivityUserInfoBinding>() {
     override val layoutId: Int = R.layout.app_activity_user_info
 
     override fun initView() {
-        val string = SharedPreferencesUtils.init(mActivityContext)
-            .getString("userInfo")
+        val string = MMKV.defaultMMKV().decodeString("userInfo")
+
         if (string != null) {
             val info = Gson().fromJson(string, UserInfo.Info::class.java)
             mDataBind.name.text = info.personName

@@ -10,6 +10,7 @@ import com.zq.base.viewmodel.BaseViewModel
 import com.zq.zhaoxian.http.HomeNetWork
 import com.zq.zhaoxian.http.model.TouTiao
 import com.zq.zhaoxian.http.model.Weather
+import com.zq.zhaoxian.utils.toRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,6 +22,8 @@ class HomeViewModel : BaseViewModel() {
     val touTiaoData = MutableLiveData<List<TouTiao.Data>>()
 
     val weather = MutableLiveData<Weather>()
+
+    val homeModel = MutableLiveData<HomeModel>()
 
     private val aCache = ACache.get(BaseApplication.getApplication())
 
@@ -66,5 +69,16 @@ class HomeViewModel : BaseViewModel() {
                 touTiaoData.value = fromLocalJson?.result?.data
             }
         }
+    }
+
+    fun queryHomeInfo(userId: String) {
+        val params = hashMapOf<String, Any>()
+        params["id"] = userId
+        launchOnlyresult({
+            HomeNetWork.getInstance().queryHomeInfo(params.toRequestBody())
+        }, {
+            homeModel.value = it
+        }, isShowDialog = false
+        )
     }
 }

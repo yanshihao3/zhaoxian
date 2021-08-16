@@ -4,8 +4,8 @@ package com.zq.zhaoxian.ui.my
 import android.content.Intent
 import com.google.gson.Gson
 import com.gyf.immersionbar.ktx.immersionBar
+import com.tencent.mmkv.MMKV
 import com.zq.base.fragment.BaseLazyFragment
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentMyBinding
 import com.zq.zhaoxian.http.model.UserInfo
@@ -30,8 +30,7 @@ class MyFragment @Inject constructor() : BaseLazyFragment<MyViewModel, AppFragme
         }
         mDataBind.userName.setOnClickListener {
             //用户没有登录就去登录 登录了就去userinfo界面
-            val boolean = SharedPreferencesUtils.init(mContext)
-                .getBoolean("isLogin")
+            val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
             if (boolean) {
                 startActivity(Intent(mContext, UserInfoActivity::class.java))
             } else {
@@ -41,11 +40,9 @@ class MyFragment @Inject constructor() : BaseLazyFragment<MyViewModel, AppFragme
     }
 
     override fun initData() {
-        val boolean = SharedPreferencesUtils.init(context)
-            .getBoolean("isLogin")
+        val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
         if (boolean) {
-            val string = SharedPreferencesUtils.init(context)
-                .getString("userInfo")
+            val string = MMKV.defaultMMKV().decodeString("userInfo")
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 mDataBind.userName.text = info.personName
@@ -61,10 +58,8 @@ class MyFragment @Inject constructor() : BaseLazyFragment<MyViewModel, AppFragme
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val string = SharedPreferencesUtils.init(context)
-            .getString("userInfo")
-        val boolean = SharedPreferencesUtils.init(context)
-            .getBoolean("isLogin")
+        val string = MMKV.defaultMMKV().decodeString("userInfo")
+        val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
         if (boolean) {
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)

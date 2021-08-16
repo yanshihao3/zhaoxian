@@ -1,11 +1,13 @@
 package com.zq.zhaoxian.ui.workbench
 
 
-import com.google.android.material.tabs.TabLayoutMediator
+import android.content.Intent
 import com.gyf.immersionbar.ktx.immersionBar
 import com.zq.base.fragment.BaseLazyFragment
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentWorkbenchBinding
+import com.zq.zhaoxian.ui.workbench.alarm.AlarmWorkActivity
+import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -17,23 +19,17 @@ class WorkbenchFragment @Inject constructor() :
     BaseLazyFragment<WorkbenchViewModel, AppFragmentWorkbenchBinding>() {
 
 
-    @Inject
-    lateinit var fragmentStateAdapter: WorkbenchFragmentStateAdapter
-
-
     override val layoutId: Int = R.layout.app_fragment_workbench
 
-    private val tabTitle = arrayOf("未完成","已完成")
 
     override fun initView() {
-        mDataBind.viewPager.adapter = fragmentStateAdapter
-        mDataBind.viewPager.isUserInputEnabled = false
-        TabLayoutMediator(
-            mDataBind.tabLayout,
-            mDataBind.viewPager
-        ) { tab, position -> // Styling each tab here
-            tab.text = tabTitle[position]
-        }.attach()
+        mDataBind.alarm.setOnClickListener {
+            startActivity(Intent(mContext, AlarmWorkActivity::class.java))
+        }
+
+        mDataBind.work.setOnClickListener {
+            startActivity(Intent(mContext, DangerActivity::class.java))
+        }
 
     }
 
@@ -44,6 +40,7 @@ class WorkbenchFragment @Inject constructor() :
     override fun onFragmentFirstVisible() {
 
     }
+
 
     override fun initImmersionBar() {
         super.initImmersionBar()

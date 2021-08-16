@@ -12,6 +12,6 @@ package com.zq.zhaoxian.viewmodel
  **/
 class SplashViewModel : BaseAppViewModel() {
     override fun load() {
-        //getToken()
+        getToken()
     }
 }

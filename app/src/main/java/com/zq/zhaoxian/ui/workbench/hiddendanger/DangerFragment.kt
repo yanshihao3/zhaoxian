@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.tencent.mmkv.MMKV
 import com.zq.base.decoration.SpacesItemDecoration
 import com.zq.base.fragment.BaseLazyFragment
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.common.MessageEvent
 import com.zq.zhaoxian.databinding.AppFragmentDangerBinding
@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 
-private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM1 = "param"
 
 /**
 
@@ -26,16 +26,17 @@ private const val ARG_PARAM1 = "param1"
 @AndroidEntryPoint
 class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBinding>() {
 
-    private var param1: String? = null
+    private var param: String? = null
 
     private var status: String? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            status = if (param1 == "0") {
-                "未处理"
+            param = it.getString(ARG_PARAM1)
+            status = if (param == "0") {
+                "待处理"
             } else {
                 "已完成"
             }
@@ -52,6 +53,8 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
     private val dataList = mutableListOf<TaskModel.TaskInfo>()
 
     var userId = ""
+
+    var isFirst = false
 
     override fun initView() {
         mDataBind.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -77,10 +80,8 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
             if (isRefresh) {
                 dataList.clear()
                 dataList.addAll(it.taskInfo)
-//                if (dataList.size == it.totalCount) {
-//                    mDataBind.refreshLayout.setEnableLoadMore(false)
-//                }
                 adapter.data = dataList
+                adapter.notifyDataSetChanged()
             } else {
                 dataList.addAll(it.taskInfo)
                 if (it.taskInfo.isEmpty()) {
@@ -89,8 +90,9 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
                     mDataBind.refreshLayout.finishLoadMore()
                 }
                 adapter.data = dataList
+                adapter.notifyDataSetChanged()
             }
-            adapter.notifyDataSetChanged()
+
 
         }
     }
@@ -98,8 +100,8 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
     override fun initData() {
 
         adapter.setOnItemChildClickListener { _, _, position ->
-            if (param1 == "0") {
-                val intent = Intent(context, DangerActivity::class.java)
+            if (param == "0") {
+                val intent = Intent(context, DangerHandleActivity::class.java)
                 intent.putExtra("data", dataList[position])
                 startActivity(intent)
             } else {
@@ -116,11 +118,10 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
     }
 
     override fun onFragmentFirstVisible() {
-        val boolean = SharedPreferencesUtils.init(context)
-            .getBoolean("isLogin")
+        val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
         if (boolean) {
-            val string = SharedPreferencesUtils.init(context)
-                .getString("userInfo")
+            val string = MMKV.defaultMMKV().decodeString("userInfo")
+
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 userId = info.id
@@ -130,9 +131,26 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (userId != "" && isFirst) {
+            isRefresh = true
+            mViewModel.loadRefresh(userId, status!!)
+            mDataBind.refreshLayout.resetNoMoreData()
+        }
+        isFirst = true
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageEvent) {
-        mViewModel.loadRefresh(userId, status!!)
+        if (event.type == "danger") {
+            if (userId != "" && event.param == param) {
+                isRefresh = true
+                mViewModel.loadRefresh(userId, status!!)
+                mDataBind.refreshLayout.resetNoMoreData()
+            }
+        }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -144,6 +162,7 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
         super.onDestroy()
         EventBus.getDefault().unregister(this)
     }
+
 
     companion object {
         @JvmStatic

@@ -1,8 +1,6 @@
 package com.zq.base.network
 
-import android.util.Log
 import com.zq.base.BaseApplication
-import com.zq.base.utils.SharedPreferencesUtils
 import okhttp3.Interceptor
 import okhttp3.Response
 

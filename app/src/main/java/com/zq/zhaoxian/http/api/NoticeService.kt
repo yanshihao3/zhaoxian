@@ -3,6 +3,7 @@ package com.zq.zhaoxian.http.api
 
 import com.zq.base.network.BaseResult
 import com.zq.zhaoxian.http.model.*
+import com.zq.zhaoxian.ui.home.HomeModel
 import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerModel
 import com.zq.zhaoxian.ui.workbench.hiddendanger.TaskModel
 import okhttp3.RequestBody
@@ -98,6 +99,13 @@ interface NoticeService {
     @Headers("Content-Type: application/json", "Accept: */*")//需要添加头
     @POST("/service/ZQIOT__InformationDelivery/1.0.0/updateNotic")
     suspend fun updateNotic(@Body body: RequestBody): ChangeWork
+
+    /**
+     * 查询首页数据
+     */
+    @Headers("Content-Type: application/json", "Accept: */*")//需要添加头
+    @POST("/service/ZQIOT__Troubleshooting/0.0.1/ZQIOT__queryTaskCountBypersonId")
+    suspend fun queryHomeInfo(@Body body: RequestBody): BaseResult<HomeModel>
 
     /**
      * 查询天气

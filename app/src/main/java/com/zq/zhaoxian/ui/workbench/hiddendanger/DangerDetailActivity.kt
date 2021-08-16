@@ -10,7 +10,7 @@ import com.zq.zhaoxian.view.recycle.FormScrollHelper
 
 
 /**
- * 隐患排查任务
+ * 隐患排查任务详情
  */
 class DangerDetailActivity : BaseActivity<ViewModel, AppActivityDangerDetailBinding>() {
 

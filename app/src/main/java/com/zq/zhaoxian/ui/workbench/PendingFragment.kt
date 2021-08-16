@@ -2,9 +2,9 @@ package com.zq.zhaoxian.ui.workbench
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.tencent.mmkv.MMKV
 import com.zq.base.decoration.SpacesItemDecoration
 import com.zq.base.fragment.BaseLazyFragment
-import com.zq.base.utils.SharedPreferencesUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentPendingBinding
 import com.zq.zhaoxian.http.model.UserInfo
@@ -40,11 +40,11 @@ class PendingFragment : BaseLazyFragment<PendingViewModel, AppFragmentPendingBin
         mDataBind.refreshLayout.setEnableLoadMore(true)
         mDataBind.refreshLayout.setOnLoadMoreListener {
             isRefresh = false
-            mViewModel.loadMore(userId,"START")
+            mViewModel.loadMore(userId, "START")
         }
         mDataBind.refreshLayout.setOnRefreshListener {
             isRefresh = true
-            mViewModel.load(userId,"START")
+            mViewModel.load(userId, "START")
             mDataBind.refreshLayout.finishRefresh()
         }
         mViewModel.data.observe(this) {
@@ -82,15 +82,14 @@ class PendingFragment : BaseLazyFragment<PendingViewModel, AppFragmentPendingBin
     }
 
     override fun onFragmentFirstVisible() {
-        val boolean = SharedPreferencesUtils.init(context)
-            .getBoolean("isLogin")
+        val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
         if (boolean) {
-            val string = SharedPreferencesUtils.init(context)
-                .getString("userInfo")
+            val string = MMKV.defaultMMKV().decodeString("userInfo")
+
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 userId = info.portalUser
-                mViewModel.loadInitial(userId,"START")
+                mViewModel.loadInitial(userId, "START")
             }
         }
 
