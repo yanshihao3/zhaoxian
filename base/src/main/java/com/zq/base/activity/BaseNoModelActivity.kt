@@ -26,9 +26,8 @@ import com.zq.base.loadsir.LoadingCallback
  */
 abstract class BaseNoModelActivity<DB : ViewDataBinding> : AppCompatActivity(), IBaseView {
     private var mLoadService: LoadService<*>? = null
-    protected lateinit var mDataBind: DB
+    protected var mDataBinding: DB? = null
     protected lateinit var mActivityContext: Activity
-
 
     @get:LayoutRes
     protected abstract val layoutId: Int
@@ -36,15 +35,16 @@ abstract class BaseNoModelActivity<DB : ViewDataBinding> : AppCompatActivity(), 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         beforeSetContentView()
-        mDataBind = DataBindingUtil.setContentView(this, layoutId)
+        mDataBinding = DataBindingUtil.setContentView(this, layoutId)
         initStatusBar()
-        mDataBind.lifecycleOwner = this
+        mDataBinding!!.lifecycleOwner = this
         mActivityContext = this
         otherInit()
         initView()
         initData()
     }
 
+    protected fun getDataBind() = mDataBinding!!
 
     /**
      * 初始化视图
@@ -88,7 +88,8 @@ abstract class BaseNoModelActivity<DB : ViewDataBinding> : AppCompatActivity(), 
 
     override fun onDestroy() {
         super.onDestroy()
-        mDataBind.unbind()
+        mDataBinding!!.unbind()
+        mDataBinding = null
         if (mLoadService != null) {
             mLoadService = null
         }

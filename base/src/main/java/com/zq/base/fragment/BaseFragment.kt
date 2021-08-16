@@ -18,7 +18,7 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> :
     BaseNoModelFragment<DB>() {
-    protected lateinit var mViewModel: VM
+    private lateinit var mViewModel: VM
 
     /**
      * 获取dataBinding 的 BR id
@@ -27,13 +27,15 @@ abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> :
      */
     open val bindingVariable: Int = 0
 
+    protected fun getViewModel() = mViewModel
+
     override fun initDataBinding(
         inflater: LayoutInflater?,
         @LayoutRes layoutId: Int,
         container: ViewGroup?
     ) {
         super.initDataBinding(inflater, layoutId, container)
-        mDataBind.lifecycleOwner = this
+        getDataBind().lifecycleOwner = this
         performBindView()
         initObserve()
     }
@@ -44,16 +46,16 @@ abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> :
     private fun performBindView() {
         createViewModel()
         if (bindingVariable > 0) {
-            mDataBind.setVariable(bindingVariable, mViewModel)
+            getDataBind().setVariable(bindingVariable, mViewModel)
         }
-        mDataBind.executePendingBindings()
+        getDataBind().executePendingBindings()
     }
 
     /**
      * 监听当前ViewModel中 showDialog和error的值
      */
     private fun initObserve() {
-        if (mViewModel == null) return
+        if (!::mViewModel.isInitialized) return
         mViewModel.defUI.dismissDialog.observe(this, { showContent() })
 
         mViewModel.defUI.showDialog.observe(this) { showLoading() }

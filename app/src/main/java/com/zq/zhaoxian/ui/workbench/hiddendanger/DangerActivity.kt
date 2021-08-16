@@ -17,18 +17,20 @@ class DangerActivity : BaseNoModelActivity<AppActivityDangerBinding>() {
     @Inject
     lateinit var fragmentStateAdapter: WorkbenchFragmentStateAdapter
 
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     private val tabTitle = arrayOf("未完成", "已完成")
 
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
-        mDataBind.viewPager.adapter = fragmentStateAdapter
-        mDataBind.viewPager.isUserInputEnabled = false
+        dataBinding.viewPager.adapter = fragmentStateAdapter
+        dataBinding.viewPager.isUserInputEnabled = false
         TabLayoutMediator(
-            mDataBind.tabLayout,
-            mDataBind.viewPager
+            dataBinding.tabLayout,
+            dataBinding.viewPager
         ) { tab, position -> // Styling each tab here
             tab.text = tabTitle[position]
         }.attach()
@@ -39,7 +41,7 @@ class DangerActivity : BaseNoModelActivity<AppActivityDangerBinding>() {
 
 
     private fun switchTab(type: Int) {
-        mDataBind.tabLayout.getTabAt(type)?.select()
+        dataBinding.tabLayout.getTabAt(type)?.select()
     }
 
     override fun initData() {

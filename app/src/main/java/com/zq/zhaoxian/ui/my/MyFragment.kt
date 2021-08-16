@@ -14,21 +14,23 @@ import javax.inject.Inject
 
 class MyFragment @Inject constructor() : BaseLazyFragment<MyViewModel, AppFragmentMyBinding>() {
     override val layoutId: Int = R.layout.app_fragment_my
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.about.setOnClickListener {
+        dataBinding.about.setOnClickListener {
             startActivity(Intent(mContext, AboutActivity::class.java))
 
         }
-        mDataBind.account.setOnClickListener {
+        dataBinding.account.setOnClickListener {
 
             startActivityForResult(Intent(mContext, AccountActivity::class.java), 0)
         }
-        mDataBind.opinion.setOnClickListener {
+        dataBinding.opinion.setOnClickListener {
 
             startActivity(Intent(mContext, OpinionActivity::class.java))
         }
-        mDataBind.userName.setOnClickListener {
+        dataBinding.userName.setOnClickListener {
             //用户没有登录就去登录 登录了就去userinfo界面
             val boolean = MMKV.defaultMMKV().decodeBool("isLogin")
             if (boolean) {
@@ -45,8 +47,8 @@ class MyFragment @Inject constructor() : BaseLazyFragment<MyViewModel, AppFragme
             val string = MMKV.defaultMMKV().decodeString("userInfo")
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
-                mDataBind.userName.text = info.personName
-                mDataBind.phone.text = info.phone
+                dataBinding.userName.text = info.personName
+                dataBinding.phone.text = info.phone
             }
         }
     }
@@ -63,12 +65,12 @@ class MyFragment @Inject constructor() : BaseLazyFragment<MyViewModel, AppFragme
         if (boolean) {
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
-                mDataBind.userName.text = info.personName
-                mDataBind.phone.text = info.phone
+                dataBinding.userName.text = info.personName
+                dataBinding.phone.text = info.phone
             }
         } else {
-            mDataBind.userName.text = "登录"
-            mDataBind.userName.text = "**********"
+            dataBinding.userName.text = "登录"
+            dataBinding.userName.text = "**********"
         }
 
     }
@@ -81,7 +83,7 @@ class MyFragment @Inject constructor() : BaseLazyFragment<MyViewModel, AppFragme
     override fun initImmersionBar() {
         super.initImmersionBar()
         immersionBar {
-            titleBar(mDataBind.view)
+            titleBar(dataBinding.view)
             transparentStatusBar()
             statusBarDarkFont(true, 0.2f)
         }

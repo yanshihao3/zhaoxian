@@ -37,20 +37,22 @@ class DangerHandleActivity : BaseActivity<ViewModel, AppActivityHandleDangerBind
     override val layoutId: Int = R.layout.app_activity_handle_danger
 
     private val list = mutableListOf<DangerModel.Info>()
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     @Inject
     lateinit var commitDialogFragment: CommitDialogFragment
     private lateinit var adapter: MonsterHAdapter
     private lateinit var pvTime: TimePickerView
     override fun initView() {
 
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
 
 
-        val mRecyclerView = mDataBind.rvHorizontal
-        val rvTitle = mDataBind.rvTitle
+        val mRecyclerView = dataBinding.rvHorizontal
+        val rvTitle = dataBinding.rvTitle
 
         rvTitle.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val titles = resources.getStringArray(R.array.form_title)
@@ -73,22 +75,22 @@ class DangerHandleActivity : BaseActivity<ViewModel, AppActivityHandleDangerBind
 
     override fun initData() {
         val taskInfo = intent.getSerializableExtra("data") as TaskModel.TaskInfo
-        mViewModel.loadInitial(taskInfo.id)
-        mDataBind.data = taskInfo
-        mViewModel.data.observe(this) {
+        getViewModel().loadInitial(taskInfo.id)
+        dataBinding.data = taskInfo
+        getViewModel().data.observe(this) {
             list.clear()
             list.addAll(it.info)
             adapter.mList = list
             adapter.notifyDataSetChanged()
         }
 
-        mDataBind.time.setOnClickListener {
+        dataBinding.time.setOnClickListener {
             pvTime.show()
 
         }
-        mDataBind.btn.setOnClickListener {
-            if (mDataBind.time.text.toString()
-                    .isEmpty() || mDataBind.time.text.toString() == "请选择时间"
+        dataBinding.btn.setOnClickListener {
+            if (dataBinding.time.text.toString()
+                    .isEmpty() || dataBinding.time.text.toString() == "请选择时间"
             ) {
                 ToastUtils.show("请选择时间")
                 return@setOnClickListener
@@ -97,7 +99,7 @@ class DangerHandleActivity : BaseActivity<ViewModel, AppActivityHandleDangerBind
                 commitDialogFragment.show(supportFragmentManager, "")
                 val params = hashMapOf<String, Any>()
                 params["id"] = taskInfo.id
-                params["data"] = mDataBind.time.text.toString()
+                params["data"] = dataBinding.time.text.toString()
                 withContext(Dispatchers.IO) {
                     val result = HomeNetWork.getInstance().rectification(params.toRequestBody())
                     if (result.resCode == "0") {
@@ -109,7 +111,7 @@ class DangerHandleActivity : BaseActivity<ViewModel, AppActivityHandleDangerBind
                 commitDialogFragment.dismiss()
             }
         }
-        mDataBind.cancel.setOnClickListener {
+        dataBinding.cancel.setOnClickListener {
             finish()
         }
     }
@@ -120,7 +122,7 @@ class DangerHandleActivity : BaseActivity<ViewModel, AppActivityHandleDangerBind
         val endDate = Calendar.getInstance()
         endDate.set(2100, 12, 31)
         pvTime = TimePickerBuilder(this) { date, _ ->
-            mDataBind.time.text = simpleDateFormat.format(date)
+            dataBinding.time.text = simpleDateFormat.format(date)
         }.setType(booleanArrayOf(true, true, true, false, false, false)) //分别对应年月日时分秒，默认全部显示
             .setTitleText("选择时间") //标题文字
             .setOutSideCancelable(false) //点击屏幕，点在控件外部范围时，是否取消显示

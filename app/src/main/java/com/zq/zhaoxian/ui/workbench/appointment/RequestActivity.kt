@@ -16,24 +16,26 @@ class RequestActivity : BaseNoModelActivity<AppActivityRequestBinding>() {
 
     override val layoutId: Int
         get() = R.layout.app_activity_request
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
 
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
         // 自定义图片加载器
         ISNav.getInstance().init { _, path, imageView ->
             imageView.load(FileUtils.getImageContentUri(mActivityContext, path))
         }
-        mDataBind.delete.setOnClickListener {
+        dataBinding.delete.setOnClickListener {
 
 
         }
-        mDataBind.faceImage.setOnClickListener {
+        dataBinding.faceImage.setOnClickListener {
             upImage()
         }
-        mDataBind.btnCommit.setOnClickListener {
+        dataBinding.btnCommit.setOnClickListener {
 
 
         }

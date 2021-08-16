@@ -34,15 +34,17 @@ class LoginActivity : BaseNoModelActivity<AppActivityLoginBinding>() {
 
     @Inject
     lateinit var commitDialogFragment: LoginDialogFragment
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.btn.setOnClickListener {
+        dataBinding.btn.setOnClickListener {
             login()
         }
     }
 
     private fun login() {
-        val phone = mDataBind.loginPhone.text.toString()
+        val phone = dataBinding.loginPhone.text.toString()
         if (PhoneFormatCheckUtils.isChinaPhoneLegal(phone)) {
             commit(phone)
         } else {

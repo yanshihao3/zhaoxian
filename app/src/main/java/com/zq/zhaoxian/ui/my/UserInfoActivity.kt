@@ -13,21 +13,23 @@ import com.zq.zhaoxian.http.model.UserInfo
 class UserInfoActivity : BaseNoModelActivity<AppActivityUserInfoBinding>() {
 
     override val layoutId: Int = R.layout.app_activity_user_info
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
         val string = MMKV.defaultMMKV().decodeString("userInfo")
 
         if (string != null) {
             val info = Gson().fromJson(string, UserInfo.Info::class.java)
-            mDataBind.name.text = info.personName
-            mDataBind.time.text = info.dateOfBirth
-            mDataBind.sex.text = when (info.gender) {
+            dataBinding.name.text = info.personName
+            dataBinding.time.text = info.dateOfBirth
+            dataBinding.sex.text = when (info.gender) {
                 "MALE" -> "男"
                 "FEMALE" -> "女"
                 else -> "男"
             }
         }
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
     }

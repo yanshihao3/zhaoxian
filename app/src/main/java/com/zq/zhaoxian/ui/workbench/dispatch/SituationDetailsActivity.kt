@@ -12,7 +12,7 @@ class SituationDetailsActivity : BaseNoModelActivity<AppActivitySituationDetails
 
 
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        getDataBind().toolbar.setBackOnClickListener {
             finish()
         }
     }

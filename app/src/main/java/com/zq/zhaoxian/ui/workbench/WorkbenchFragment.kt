@@ -23,11 +23,11 @@ class WorkbenchFragment @Inject constructor() :
 
 
     override fun initView() {
-        mDataBind.alarm.setOnClickListener {
+        getDataBind().alarm.setOnClickListener {
             startActivity(Intent(mContext, AlarmWorkActivity::class.java))
         }
 
-        mDataBind.work.setOnClickListener {
+        getDataBind().work.setOnClickListener {
             startActivity(Intent(mContext, DangerActivity::class.java))
         }
 
@@ -45,7 +45,7 @@ class WorkbenchFragment @Inject constructor() :
     override fun initImmersionBar() {
         super.initImmersionBar()
         immersionBar {
-            titleBar(mDataBind.toolbar)
+            titleBar(getDataBind().toolbar)
             transparentStatusBar()
             statusBarDarkFont(true, 0.2f)
         }

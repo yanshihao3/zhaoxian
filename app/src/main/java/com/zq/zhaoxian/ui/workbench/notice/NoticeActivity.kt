@@ -14,18 +14,20 @@ class NoticeActivity : BaseNoModelActivity<AppActivityNoticeBinding>() {
 
     @Inject
     lateinit var fragmentStateAdapter: NoticeFragmentStateAdapter
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
-        mDataBind.viewPager.adapter = fragmentStateAdapter
-        mDataBind.viewPager.isUserInputEnabled = false
-        mDataBind.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        dataBinding.viewPager.adapter = fragmentStateAdapter
+        dataBinding.viewPager.isUserInputEnabled = false
+        dataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.text) {
-                    "待阅读" -> mDataBind.viewPager.currentItem = 0
-                    "已阅读" -> mDataBind.viewPager.currentItem = 1
+                    "待阅读" -> dataBinding.viewPager.currentItem = 0
+                    "已阅读" -> dataBinding.viewPager.currentItem = 1
                 }
             }
 

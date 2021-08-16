@@ -30,7 +30,9 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
 
     private var status: String? = null
 
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -57,26 +59,26 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
     var isFirst = false
 
     override fun initView() {
-        mDataBind.recyclerView.layoutManager = LinearLayoutManager(context)
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.addItemDecoration(
+        dataBinding.recyclerView.layoutManager = LinearLayoutManager(context)
+        dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.addItemDecoration(
             SpacesItemDecoration(context).setParam(
                 resources.getColor(
                     R.color.line_color
                 ), 1.0f
             )
         )
-        mDataBind.refreshLayout.setEnableLoadMore(true)
-        mDataBind.refreshLayout.setOnLoadMoreListener {
+        dataBinding.refreshLayout.setEnableLoadMore(true)
+        dataBinding.refreshLayout.setOnLoadMoreListener {
             isRefresh = false
-            mViewModel.loadMore(userId, status!!)
+            getViewModel().loadMore(userId, status!!)
         }
-        mDataBind.refreshLayout.setOnRefreshListener {
+        dataBinding.refreshLayout.setOnRefreshListener {
             isRefresh = true
-            mViewModel.loadRefresh(userId, status!!)
-            mDataBind.refreshLayout.finishRefresh()
+            getViewModel().loadRefresh(userId, status!!)
+            dataBinding.refreshLayout.finishRefresh()
         }
-        mViewModel.data.observe(this) {
+        getViewModel().data.observe(this) {
             if (isRefresh) {
                 dataList.clear()
                 dataList.addAll(it.taskInfo)
@@ -85,9 +87,9 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
             } else {
                 dataList.addAll(it.taskInfo)
                 if (it.taskInfo.isEmpty()) {
-                    mDataBind.refreshLayout.finishLoadMoreWithNoMoreData()
+                    dataBinding.refreshLayout.finishLoadMoreWithNoMoreData()
                 } else {
-                    mDataBind.refreshLayout.finishLoadMore()
+                    dataBinding.refreshLayout.finishLoadMore()
                 }
                 adapter.data = dataList
                 adapter.notifyDataSetChanged()
@@ -112,7 +114,7 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
         }
 
         adapter.setEmptyView(R.layout.app_recycler_view_empty_item)
-        setLoadSir(mDataBind.root)
+        setLoadSir(dataBinding.root)
         showContent()
 
     }
@@ -125,7 +127,7 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 userId = info.id
-                mViewModel.loadInitial(userId, status!!)
+                getViewModel().loadInitial(userId, status!!)
             }
         }
 
@@ -135,8 +137,8 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
         super.onResume()
         if (userId != "" && isFirst) {
             isRefresh = true
-            mViewModel.loadRefresh(userId, status!!)
-            mDataBind.refreshLayout.resetNoMoreData()
+            getViewModel().loadRefresh(userId, status!!)
+            dataBinding.refreshLayout.resetNoMoreData()
         }
         isFirst = true
     }
@@ -146,8 +148,8 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
         if (event.type == "danger") {
             if (userId != "" && event.param == param) {
                 isRefresh = true
-                mViewModel.loadRefresh(userId, status!!)
-                mDataBind.refreshLayout.resetNoMoreData()
+                getViewModel().loadRefresh(userId, status!!)
+                dataBinding.refreshLayout.resetNoMoreData()
             }
         }
 

@@ -44,7 +44,12 @@ class HomeFragment @Inject constructor() :
     @Inject
     lateinit var adapter: HomeAdapter
 
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
+    val viewModel by lazy { 
+        getViewModel()
+    }
     private val data = mutableListOf<TouTiao.Data>()
     private val list = mutableListOf<String>()
 
@@ -63,15 +68,15 @@ class HomeFragment @Inject constructor() :
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun initView() {
-        mDataBind.banner.setAdapter(bannerAdapter).addBannerLifecycleObserver(this).indicator =
+        dataBinding.banner.setAdapter(bannerAdapter).addBannerLifecycleObserver(this).indicator =
             CircleIndicator(mContext)
 
-        mDataBind.banner.pivotX
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.layoutManager =
+        dataBinding.banner.pivotX
+        dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        mDataBind.recyclerView.addItemDecoration(
+        dataBinding.recyclerView.addItemDecoration(
             SpacesItemDecoration(context).setParam(
                 resources.getColor(
                     R.color.line1_color
@@ -83,30 +88,30 @@ class HomeFragment @Inject constructor() :
             toDetails(data[position].url)
         }
 
-        mDataBind.refreshLayout.setEnableLoadMore(false)
+        dataBinding.refreshLayout.setEnableLoadMore(false)
 
-        mDataBind.refreshLayout.setOnRefreshListener {
-            mViewModel.queryHomeInfo(userId)
-            mDataBind.refreshLayout.finishRefresh()
+        dataBinding.refreshLayout.setOnRefreshListener {
+            viewModel.queryHomeInfo(userId)
+            dataBinding.refreshLayout.finishRefresh()
         }
 
-        mDataBind.unfinnish.setOnClickListener {
+        dataBinding.unfinnish.setOnClickListener {
             val intent = Intent(mContext, DangerActivity::class.java)
             intent.putExtra("tab", 0)
             startActivity(intent)
         }
 
-        mDataBind.finnish.setOnClickListener {
+        dataBinding.finnish.setOnClickListener {
             val intent = Intent(mContext, DangerActivity::class.java)
             intent.putExtra("tab", 1)
             startActivity(intent)
         }
-        mDataBind.alarmUnfinnish.setOnClickListener {
+        dataBinding.alarmUnfinnish.setOnClickListener {
             val intent = Intent(mContext, AlarmWorkActivity::class.java)
             intent.putExtra("tab", 0)
             startActivity(intent)
         }
-        mDataBind.alarmFinnish.setOnClickListener {
+        dataBinding.alarmFinnish.setOnClickListener {
             val intent = Intent(mContext, AlarmWorkActivity::class.java)
             intent.putExtra("tab", 1)
             startActivity(intent)
@@ -114,28 +119,28 @@ class HomeFragment @Inject constructor() :
     }
 
     override fun initData() {
-        mDataBind.notice.setOnClickListener {
+        dataBinding.notice.setOnClickListener {
             startActivity(Intent(mContext, NoticeActivity::class.java))
         }
 
-        mViewModel.touTiaoData.observe(this) {
+        viewModel.touTiaoData.observe(this) {
             data.addAll(it)
             adapter.data = data
             adapter.notifyDataSetChanged()
         }
 
-        mViewModel.weather.observe(this) {
-            mDataBind.temperature.text = it.result.realtime.temperature
-            mDataBind.windPower.text = it.result.realtime.direct + it.result.realtime.power
-            mDataBind.weather.text = it.result.realtime.info
+        viewModel.weather.observe(this) {
+            dataBinding.temperature.text = it.result.realtime.temperature
+            dataBinding.windPower.text = it.result.realtime.direct + it.result.realtime.power
+            dataBinding.weather.text = it.result.realtime.info
             val temperature = it.result.future[0].temperature
             val split = temperature.split("/")
-            mDataBind.desc.text = "最低${split[0]}℃ 最高${split[1]}"
+            dataBinding.desc.text = "最低${split[0]}℃ 最高${split[1]}"
             showWeatherImage(it.result.realtime.wid)
 
         }
-        mViewModel.homeModel.observe(this) {
-            mDataBind.notice.text = it.notice.ZQIOT__title__CST
+        viewModel.homeModel.observe(this) {
+            dataBinding.notice.text = it.notice.ZQIOT__title__CST
             val workInfo = it.info
             list.clear()
             list.addAll(it.picture)
@@ -143,10 +148,10 @@ class HomeFragment @Inject constructor() :
             bannerAdapter.notifyDataSetChanged()
             for (info in workInfo) {
                 if (info.ZQIOT__state__CST == "未处理") {
-                    mDataBind.pendingNumber.text = info.count.toString()
+                    dataBinding.pendingNumber.text = info.count.toString()
                 }
                 if (info.ZQIOT__state__CST == "已完成") {
-                    mDataBind.finishNumber.text = info.count.toString()
+                    dataBinding.finishNumber.text = info.count.toString()
                 }
             }
         }
@@ -155,118 +160,118 @@ class HomeFragment @Inject constructor() :
     private fun showWeatherImage(wid: String) {
         when (wid) {
             "00" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_01qing)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_01qing)
             }
             "01" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_03duoyun)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_03duoyun)
             }
             "02" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_05yin)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_05yin)
             }
             "03" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_07zhenyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_07zhenyu)
             }
             "04" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_23leizhenyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_23leizhenyu)
             }
             "05" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_25leizhenyubingbanyoubingbao)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_25leizhenyubingbanyoubingbao)
             }
             "06" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_27yujiaxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_27yujiaxue)
             }
             "07" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_11xiaoyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_11xiaoyu)
             }
             "08" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_13zhongyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_13zhongyu)
             }
             "09" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_15dayu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_15dayu)
             }
             "10" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_17baoyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_17baoyu)
             }
             "11" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_19dabaoyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_19dabaoyu)
             }
             "12" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_21tedabaoyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_21tedabaoyu)
             }
             "13" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_09zhenxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_09zhenxue)
             }
             "14" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_29xiaoxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_29xiaoxue)
             }
             "15" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_31zhongxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_31zhongxue)
             }
             "16" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_33daxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_33daxue)
             }
             "17" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_35baoxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_35baoxue)
             }
             "18" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_37wu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_37wu)
             }
             "19" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_41dongyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_41dongyu)
             }
             "20" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_45shachenbao)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_45shachenbao)
             }
             "21" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_11xiaoyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_11xiaoyu)
             }
             "22" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_13zhongyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_13zhongyu)
             }
             "23" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_15dayu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_15dayu)
             }
             "24" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_17baoyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_17baoyu)
             }
             "25" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_19dabaoyu)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_19dabaoyu)
             }
             "26" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_29xiaoxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_29xiaoxue)
             }
             "27" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_31zhongxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_31zhongxue)
             }
             "28" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_33daxue)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_33daxue)
             }
             "29" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_49fuchen)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_49fuchen)
             }
             "30" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_43yangsha)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_43yangsha)
             }
             "31" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_47qiangshachenbao)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_47qiangshachenbao)
             }
             "53" -> {
-                mDataBind.weatherImage.setImageResource(R.mipmap.tq_39mai)
+                dataBinding.weatherImage.setImageResource(R.mipmap.tq_39mai)
             }
 
         }
     }
 
     override fun onFragmentFirstVisible() {
-        mViewModel.queryWeather()
-        mViewModel.queryTouTiao()
+        viewModel.queryWeather()
+        viewModel.queryTouTiao()
 
         val defaultMMKV = MMKV.defaultMMKV()
         val string = defaultMMKV.decodeString("userInfo")
         if (string != null) {
             val info = Gson().fromJson(string, UserInfo.Info::class.java)
             userId = info.id
-            mViewModel.queryHomeInfo(userId)
+            viewModel.queryHomeInfo(userId)
         }
     }
 
@@ -275,7 +280,7 @@ class HomeFragment @Inject constructor() :
     fun onMessageEvent(event: MessageEvent) {
         if (event.type == "home") {
             if (userId != "")
-                mViewModel.queryHomeInfo(userId)
+                viewModel.queryHomeInfo(userId)
         }
     }
 
@@ -299,7 +304,7 @@ class HomeFragment @Inject constructor() :
     override fun initImmersionBar() {
         super.initImmersionBar()
         immersionBar {
-            statusBarView(mDataBind.barView)
+            statusBarView(dataBinding.barView)
             transparentStatusBar()
             statusBarDarkFont(true, 0.2f)
         }

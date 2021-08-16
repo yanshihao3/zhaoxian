@@ -23,16 +23,18 @@ class AlarmWorkActivity : BaseNoModelActivity<AppActivityAlarmWorkBinding>() {
 
 
     private val tabTitle = arrayOf("未完成", "已完成")
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
-        mDataBind.viewPager.adapter = fragmentStateAdapter
-        mDataBind.viewPager.isUserInputEnabled = false
+        dataBinding.viewPager.adapter = fragmentStateAdapter
+        dataBinding.viewPager.isUserInputEnabled = false
         TabLayoutMediator(
-            mDataBind.tabLayout,
-            mDataBind.viewPager
+            dataBinding.tabLayout,
+            dataBinding.viewPager
         ) { tab, position -> // Styling each tab here
             tab.text = tabTitle[position]
         }.attach()
@@ -42,7 +44,7 @@ class AlarmWorkActivity : BaseNoModelActivity<AppActivityAlarmWorkBinding>() {
     }
 
     private fun switchTab(type: Int) {
-        mDataBind.tabLayout.getTabAt(type)?.select()
+        dataBinding.tabLayout.getTabAt(type)?.select()
     }
 
     override fun initData() {

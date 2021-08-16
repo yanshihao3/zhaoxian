@@ -15,18 +15,20 @@ class DispatchActivity : BaseNoModelActivity<AppActivityDispatchBinding>() {
 
     @Inject
     lateinit var fragmentStateAdapter: DispatchFragmentStateAdapter
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
-        mDataBind.viewPager.adapter = fragmentStateAdapter
-        mDataBind.viewPager.isUserInputEnabled = false
-        mDataBind.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        dataBinding.viewPager.adapter = fragmentStateAdapter
+        dataBinding.viewPager.isUserInputEnabled = false
+        dataBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.text) {
-                    "未完成" -> mDataBind.viewPager.currentItem = 0
-                    "已完成" -> mDataBind.viewPager.currentItem = 1
+                    "未完成" -> dataBinding.viewPager.currentItem = 0
+                    "已完成" -> dataBinding.viewPager.currentItem = 1
                 }
             }
 

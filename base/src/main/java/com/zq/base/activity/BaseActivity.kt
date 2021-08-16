@@ -15,7 +15,7 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> :
     BaseNoModelActivity<DB>() {
-    protected lateinit var mViewModel: VM
+    private lateinit var mViewModel: VM
 
     override fun otherInit() {
         super.otherInit()
@@ -23,6 +23,7 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> :
         initObserve()
     }
 
+    protected fun getViewModel() = mViewModel
 
     open val bindingVariable: Int = 0
 
@@ -32,9 +33,9 @@ abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding> :
     private fun performBindView() {
         createViewModel()
         if (bindingVariable > 0) {
-            mDataBind.setVariable(bindingVariable, mViewModel)
+            getDataBind().setVariable(bindingVariable, mViewModel)
         }
-        mDataBind.executePendingBindings()
+        getDataBind().executePendingBindings()
     }
 
     /**

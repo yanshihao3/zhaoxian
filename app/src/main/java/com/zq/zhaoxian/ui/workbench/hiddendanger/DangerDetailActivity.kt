@@ -20,15 +20,17 @@ class DangerDetailActivity : BaseActivity<ViewModel, AppActivityDangerDetailBind
     private val list = mutableListOf<DangerModel.Info>()
 
     private lateinit var adapter: MonsterHAdapter
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
 
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
 
-        val mRecyclerView = mDataBind.rvHorizontal
-        val rvTitle = mDataBind.rvTitle
+        val mRecyclerView = dataBinding.rvHorizontal
+        val rvTitle = dataBinding.rvTitle
 
         rvTitle.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val titles = resources.getStringArray(R.array.form_title)
@@ -51,9 +53,9 @@ class DangerDetailActivity : BaseActivity<ViewModel, AppActivityDangerDetailBind
 
     override fun initData() {
         val taskInfo = intent.getSerializableExtra("data") as TaskModel.TaskInfo
-        mViewModel.loadInitial(taskInfo.id)
-        mDataBind.data = taskInfo
-        mViewModel.data.observe(this) {
+        getViewModel().loadInitial(taskInfo.id)
+        dataBinding.data = taskInfo
+        getViewModel().data.observe(this) {
             list.clear()
             list.addAll(it.info)
             adapter.mList = list

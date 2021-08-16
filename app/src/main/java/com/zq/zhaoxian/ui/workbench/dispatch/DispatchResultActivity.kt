@@ -17,19 +17,21 @@ class DispatchResultActivity : BaseNoModelActivity<AppActivityDispatchResultBind
 
     @Inject
     lateinit var adapter: DispatchAdapter
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.recyclerView.layoutManager = LinearLayoutManager(mActivityContext)
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.addItemDecoration(
+        dataBinding.recyclerView.layoutManager = LinearLayoutManager(mActivityContext)
+        dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.addItemDecoration(
             SpacesItemDecoration(mActivityContext).setParam(
                 resources.getColor(
                     R.color.line_color
                 ), 1.0f
             )
         )
-        mDataBind.refreshLayout.setEnableLoadMore(true)
-        mDataBind.refreshLayout.setOnRefreshListener { loadData() }
+        dataBinding.refreshLayout.setEnableLoadMore(true)
+        dataBinding.refreshLayout.setOnRefreshListener { loadData() }
 
         /**
          * 详情界面

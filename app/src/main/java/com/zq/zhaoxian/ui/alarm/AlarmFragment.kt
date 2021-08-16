@@ -11,8 +11,8 @@ class AlarmFragment : BaseFragment<AlarmViewModel, AppFragmentAlarmBinding>() {
 
 
     override fun initView() {
-        val textView: TextView = mDataBind.textDashboard
-        mViewModel.text.observe(viewLifecycleOwner, Observer {
+        val textView: TextView = getDataBind().textDashboard
+        getViewModel().text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
     }

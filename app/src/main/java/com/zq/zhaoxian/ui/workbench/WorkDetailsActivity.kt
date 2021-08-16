@@ -14,7 +14,7 @@ class WorkDetailsActivity : BaseNoModelActivity<AppActivityWorkDetailsBinding>()
     override val layoutId: Int = R.layout.app_activity_work_details
 
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        getDataBind().toolbar.setBackOnClickListener {
             finish()
         }
     }

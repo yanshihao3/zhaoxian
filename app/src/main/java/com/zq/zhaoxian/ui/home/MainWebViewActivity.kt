@@ -7,10 +7,12 @@ import com.zq.zhaoxian.databinding.ActivityWebviewBinding
 class MainWebViewActivity : BaseNoModelActivity<ActivityWebviewBinding>() {
     private var mTitle: String? = ""
     private var mUrl: String? = ""
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     public override fun initView() {
-        mDataBind.wvLoading.addProgressBar()
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.wvLoading.addProgressBar()
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
     }
@@ -18,20 +20,20 @@ class MainWebViewActivity : BaseNoModelActivity<ActivityWebviewBinding>() {
     public override fun initData() {
         mTitle = intent.getStringExtra("title")
         mUrl = intent.getStringExtra("url")
-        mDataBind.wvLoading.loadMessageUrl(mUrl)
+        dataBinding.wvLoading.loadMessageUrl(mUrl)
     }
 
 
     public override fun onDestroy() {
         super.onDestroy()
-        mDataBind.wvLoading.destroyWebView()
+        dataBinding.wvLoading.destroyWebView()
     }
 
     /**
      * 按返回键时， 不退出程序而是返回WebView的上一页面
      */
     override fun onBackPressed() {
-        if (mDataBind.wvLoading.canGoBack()) mDataBind.wvLoading.goBack() else {
+        if (dataBinding.wvLoading.canGoBack()) dataBinding.wvLoading.goBack() else {
             super.onBackPressed()
         }
     }

@@ -39,7 +39,7 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.container, fromFragment)
         transaction.commit()
-        mDataBind.bottomView.setOnNavigationItemSelectedListener {
+        getDataBind().bottomView.setOnNavigationItemSelectedListener {
             val fragCategory = when (it.itemId) {
                 R.id.navigation_home -> homeFragment
                 R.id.navigation_workbench -> workbenchFragment
@@ -75,7 +75,7 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
     }
 
     fun jumpFragment(type: Int) {
-        mDataBind.bottomView.selectedItemId = R.id.navigation_workbench
+        getDataBind().bottomView.selectedItemId = R.id.navigation_workbench
 
       //  mDataBind.bottomView.postDelayed(Runnable { workbenchFragment.switchTab(type) }, 100)
     }

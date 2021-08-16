@@ -28,39 +28,39 @@ class HandleFragment : BaseLazyFragment<PendingViewModel, AppFragmentPendingBind
 
     var userId = ""
     override fun initView() {
-        mDataBind.recyclerView.layoutManager = LinearLayoutManager(context)
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.addItemDecoration(
+        getDataBind().recyclerView.layoutManager = LinearLayoutManager(context)
+        getDataBind().recyclerView.adapter = adapter
+        getDataBind().recyclerView.addItemDecoration(
             SpacesItemDecoration(context).setParam(
                 resources.getColor(
                     R.color.line_color
                 ), 1.0f
             )
         )
-        mDataBind.refreshLayout.setEnableLoadMore(true)
-        mDataBind.refreshLayout.setOnLoadMoreListener {
+        getDataBind().refreshLayout.setEnableLoadMore(true)
+        getDataBind().refreshLayout.setOnLoadMoreListener {
             isRefresh = false
-            mViewModel.loadMore(userId,"NORMAL")
+            getViewModel().loadMore(userId,"NORMAL")
         }
-        mDataBind.refreshLayout.setOnRefreshListener {
+        getDataBind().refreshLayout.setOnRefreshListener {
             isRefresh = true
-            mViewModel.load(userId,"NORMAL")
-            mDataBind.refreshLayout.finishRefresh()
+            getViewModel().load(userId,"NORMAL")
+            getDataBind().refreshLayout.finishRefresh()
         }
-        mViewModel.data.observe(this) {
+        getViewModel().data.observe(this) {
             if (isRefresh) {
                 dataList.clear()
                 dataList.addAll(it.list)
                 if (dataList.size == it.totalCount) {
-                    mDataBind.refreshLayout.setEnableLoadMore(false)
+                    getDataBind().refreshLayout.setEnableLoadMore(false)
                 }
                 adapter.data = dataList
             } else {
                 dataList.addAll(it.list)
                 if (dataList.size == it.totalCount) {
-                    mDataBind.refreshLayout.finishLoadMoreWithNoMoreData()
+                    getDataBind().refreshLayout.finishLoadMoreWithNoMoreData()
                 } else {
-                    mDataBind.refreshLayout.finishLoadMore()
+                    getDataBind().refreshLayout.finishLoadMore()
                 }
                 adapter.data = dataList
             }
@@ -73,7 +73,7 @@ class HandleFragment : BaseLazyFragment<PendingViewModel, AppFragmentPendingBind
 
 
         adapter.setEmptyView(R.layout.app_recycler_view_empty_item)
-        setLoadSir(mDataBind.root)
+        setLoadSir(getDataBind().root)
         adapter.setOnItemChildClickListener { adapter, view, position ->
             val workbenchModel = dataList[position]
             val intent = Intent(context, DangerHandleActivity::class.java)
@@ -92,7 +92,7 @@ class HandleFragment : BaseLazyFragment<PendingViewModel, AppFragmentPendingBind
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 userId = info.portalUser
-                mViewModel.loadInitial(userId,"NORMAL")
+                getViewModel().loadInitial(userId,"NORMAL")
             }
 
         }

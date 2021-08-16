@@ -23,7 +23,7 @@ class AppointmentDetailsActivity : BaseNoModelActivity<AppActivityAppointmentDet
             DisplayUtils.dip2px(mActivityContext, 152f),
             DisplayUtils.dip2px(mActivityContext, 152f)
         )
-        mDataBind.qrcode.setImageBitmap(bitmap)
+        getDataBind().qrcode.setImageBitmap(bitmap)
     }
 
     override fun initData() {

@@ -51,28 +51,35 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
     var userId = ""
 
     var isFirst = false
+    
+    val dataBinding by lazy {
+        getDataBind()
+    }
+    val viewModel by lazy { 
+        getViewModel()
+    }
 
     override fun initView() {
-        mDataBind.recyclerView.layoutManager = LinearLayoutManager(context)
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.addItemDecoration(
+        dataBinding.recyclerView.layoutManager = LinearLayoutManager(context)
+        dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.addItemDecoration(
             SpacesItemDecoration(context).setParam(
                 resources.getColor(
                     R.color.line_color
                 ), 1.0f
             )
         )
-        mDataBind.refreshLayout.setEnableLoadMore(true)
-        mDataBind.refreshLayout.setOnLoadMoreListener {
+        dataBinding.refreshLayout.setEnableLoadMore(true)
+        dataBinding.refreshLayout.setOnLoadMoreListener {
             isRefresh = false
-            mViewModel.loadMore(userId, status!!)
+            viewModel.loadMore(userId, status!!)
         }
-        mDataBind.refreshLayout.setOnRefreshListener {
+        dataBinding.refreshLayout.setOnRefreshListener {
             isRefresh = true
-            mViewModel.loadRefresh(userId, status!!)
-            mDataBind.refreshLayout.finishRefresh()
+            viewModel.loadRefresh(userId, status!!)
+            dataBinding.refreshLayout.finishRefresh()
         }
-        mViewModel.data.observe(this) {
+        viewModel.data.observe(this) {
             if (isRefresh) {
                 dataList.clear()
                 dataList.addAll(it.taskInfo)
@@ -81,9 +88,9 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
             } else {
                 dataList.addAll(it.taskInfo)
                 if (it.taskInfo.isEmpty()) {
-                    mDataBind.refreshLayout.finishLoadMoreWithNoMoreData()
+                    dataBinding.refreshLayout.finishLoadMoreWithNoMoreData()
                 } else {
-                    mDataBind.refreshLayout.finishLoadMore()
+                    dataBinding.refreshLayout.finishLoadMore()
                 }
                 adapter.data = dataList
                 adapter.notifyDataSetChanged()
@@ -108,7 +115,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
         }
 
         adapter.setEmptyView(R.layout.app_recycler_view_empty_item)
-        setLoadSir(mDataBind.root)
+        setLoadSir(dataBinding.root)
         showContent()
 
     }
@@ -121,7 +128,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 userId = info.id
-                mViewModel.loadInitial(userId, status!!)
+                viewModel.loadInitial(userId, status!!)
             }
         }
 
@@ -131,8 +138,8 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
         super.onResume()
         if (userId != "" && isFirst) {
             isRefresh = true
-            mViewModel.loadRefresh(userId, status!!)
-            mDataBind.refreshLayout.resetNoMoreData()
+            viewModel.loadRefresh(userId, status!!)
+            dataBinding.refreshLayout.resetNoMoreData()
         }
         isFirst = true
     }

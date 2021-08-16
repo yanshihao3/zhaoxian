@@ -25,9 +25,11 @@ class AccountActivity : BaseNoModelActivity<AppActivityAccountBinding>() {
 
     @Inject
     lateinit var logoutDialogFragment: LogoutDialogFragment
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
         logoutDialogFragment.setCanceledOnTouchOutside(false)
@@ -38,13 +40,13 @@ class AccountActivity : BaseNoModelActivity<AppActivityAccountBinding>() {
                 finish()
             }
         }
-        mDataBind.phone.setOnClickListener {
+        dataBinding.phone.setOnClickListener {
             ToastUtils.show("该功能尚未开放")
         }
-        mDataBind.password.setOnClickListener {
+        dataBinding.password.setOnClickListener {
             ToastUtils.show("该功能尚未开放")
         }
-        mDataBind.logout.setOnClickListener {
+        dataBinding.logout.setOnClickListener {
             logoutDialogFragment.show(supportFragmentManager, "")
         }
     }

@@ -43,7 +43,7 @@ class HandleActivity : BaseActivity<HandleViewModel, AppActivityHandleBinding>()
     private val list = mutableListOf<String>()
     lateinit var workbenchModel: WorkbenchModel
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        getDataBind().toolbar.setBackOnClickListener {
             finish()
         }
         plusPath =
@@ -53,8 +53,8 @@ class HandleActivity : BaseActivity<HandleViewModel, AppActivityHandleBinding>()
         ISNav.getInstance().init { _, path, imageView ->
             imageView.load(File(path))
         }
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.layoutManager =
+        getDataBind().recyclerView.adapter = adapter
+        getDataBind().recyclerView.layoutManager =
             StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         adapter.setOnItemChildClickListener { adapter, view, position ->
             when (view.id) {
@@ -73,12 +73,12 @@ class HandleActivity : BaseActivity<HandleViewModel, AppActivityHandleBinding>()
             }
         }
         initTimePicker()
-        mDataBind.time.setOnClickListener {
+        getDataBind().time.setOnClickListener {
             pvTime.show()
         }
-        mDataBind.btn.setOnClickListener {
-            val handleMethod = mDataBind.handleMethod.text.toString()
-            val time = mDataBind.time.text
+        getDataBind().btn.setOnClickListener {
+            val handleMethod = getDataBind().handleMethod.text.toString()
+            val time = getDataBind().time.text
             if (handleMethod.isEmpty()) {
                 ToastUtils.show("请填写处理方式")
                 return@setOnClickListener
@@ -93,7 +93,7 @@ class HandleActivity : BaseActivity<HandleViewModel, AppActivityHandleBinding>()
                     data.add(it)
                 }
             }
-            mViewModel.commit(workbenchModel.id, data)
+            getViewModel().commit(workbenchModel.id, data)
         }
     }
 
@@ -103,7 +103,7 @@ class HandleActivity : BaseActivity<HandleViewModel, AppActivityHandleBinding>()
         val endDate = Calendar.getInstance()
         endDate.set(2100, 12, 31)
         pvTime = TimePickerBuilder(this) { date, _ ->
-            mDataBind.time.text = simpleDateFormat.format(date)
+            getDataBind().time.text = simpleDateFormat.format(date)
         }.setType(booleanArrayOf(true, true, true, true, true, false)) //分别对应年月日时分秒，默认全部显示
             .setTitleText("选择时间") //标题文字
             .setOutSideCancelable(false) //点击屏幕，点在控件外部范围时，是否取消显示
@@ -144,7 +144,7 @@ class HandleActivity : BaseActivity<HandleViewModel, AppActivityHandleBinding>()
         list.add(plusPath)
         adapter.data = list
         workbenchModel = intent.getSerializableExtra("data") as WorkbenchModel
-        mDataBind.data = workbenchModel
+        getDataBind().data = workbenchModel
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

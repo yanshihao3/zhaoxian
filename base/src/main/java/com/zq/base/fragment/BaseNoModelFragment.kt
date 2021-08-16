@@ -3,7 +3,6 @@ package com.zq.base.fragment
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import com.zq.base.baseinterface.IBasePagingView
 import com.zq.base.loadsir.EmptyCallback
 import com.zq.base.loadsir.ErrorCallback
 import com.zq.base.loadsir.LoadingCallback
-import kotlin.math.log
 
 /**
  * @program: mvvm
@@ -31,7 +29,7 @@ import kotlin.math.log
 abstract class BaseNoModelFragment<DB : ViewDataBinding> : Fragment(), IBasePagingView,
     SimpleImmersionOwner {
     private var mLoadService: LoadService<*>? = null
-    protected lateinit var mDataBind: DB
+    private var mDataBinding: DB? = null
     protected var mContext: Context? = null
     private var mActivity: FragmentActivity? = null
     private val mSimpleImmersionProxy by lazy {
@@ -50,7 +48,7 @@ abstract class BaseNoModelFragment<DB : ViewDataBinding> : Fragment(), IBasePagi
         savedInstanceState: Bundle?
     ): View? {
         initDataBinding(inflater, layoutId, container)
-        return mDataBind.root
+        return mDataBinding!!.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -60,6 +58,8 @@ abstract class BaseNoModelFragment<DB : ViewDataBinding> : Fragment(), IBasePagi
         initData()
     }
 
+    protected fun getDataBind() = mDataBinding!!
+
     /**
      * 初始化DataBinding
      */
@@ -68,7 +68,7 @@ abstract class BaseNoModelFragment<DB : ViewDataBinding> : Fragment(), IBasePagi
         @LayoutRes layoutId: Int,
         container: ViewGroup?
     ) {
-        mDataBind = DataBindingUtil.inflate(inflater!!, layoutId, container, false)
+        mDataBinding = DataBindingUtil.inflate(inflater!!, layoutId, container, false)
     }
 
     /**
@@ -88,9 +88,10 @@ abstract class BaseNoModelFragment<DB : ViewDataBinding> : Fragment(), IBasePagi
     protected abstract fun initData()
     override fun onDestroy() {
         super.onDestroy()
-        mDataBind.unbind()
+        mDataBinding!!.unbind()
         mContext = null
         mActivity = null
+        mDataBinding = null
         mSimpleImmersionProxy.onDestroy()
 
     }

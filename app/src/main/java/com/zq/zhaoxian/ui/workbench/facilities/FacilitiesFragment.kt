@@ -20,7 +20,9 @@ class FacilitiesFragment private constructor() :
     BaseLazyFragment<FacilitiesViewModel, AppFragmentFacilitiesBinding>() {
     override val layoutId: Int = R.layout.app_fragment_facilities
     private var param: String? = null
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     @Inject
     lateinit var adapter: FacilitiesAdapter
 
@@ -32,22 +34,22 @@ class FacilitiesFragment private constructor() :
     }
 
     override fun onFragmentFirstVisible() {
-        mViewModel.load()
+        getViewModel().load()
         adapter.data = mutableListOf(FacilitiesModel(), FacilitiesModel())
     }
 
     override fun initView() {
-        mDataBind.recyclerView.layoutManager = LinearLayoutManager(context)
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.addItemDecoration(
+        dataBinding.recyclerView.layoutManager = LinearLayoutManager(context)
+        dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.addItemDecoration(
             SpacesItemDecoration(context).setParam(
                 resources.getColor(
                     R.color.line_color
                 ), 1.0f
             )
         )
-        mDataBind.refreshLayout.setEnableLoadMore(true)
-        mDataBind.refreshLayout.setOnRefreshListener { loadData() }
+        dataBinding.refreshLayout.setEnableLoadMore(true)
+        dataBinding.refreshLayout.setOnRefreshListener { loadData() }
 
         /**
          * 详情界面

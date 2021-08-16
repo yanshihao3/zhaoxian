@@ -19,13 +19,15 @@ class OpinionActivity : BaseNoModelActivity<AppActivityOpinionBinding>() {
     @Inject
     lateinit var commitDialogFragment: CommitDialogFragment
     override val layoutId: Int = R.layout.app_activity_opinion
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
         commitDialogFragment.setCanceledOnTouchOutside(false)
-        mDataBind.btnCommit.setOnClickListener {
+        dataBinding.btnCommit.setOnClickListener {
             commit()
         }
     }

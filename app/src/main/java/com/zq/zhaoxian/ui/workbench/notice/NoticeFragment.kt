@@ -30,6 +30,9 @@ class NoticeFragment private constructor() :
 
     @Inject
     lateinit var adapter: NoticeAdapter
+    val dataBinding by lazy {
+        getDataBind()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,30 +48,30 @@ class NoticeFragment private constructor() :
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
                 id = info.id
-                setLoadSir(mDataBind.root)
-                mViewModel.loadInitial(id, param!!)
+                setLoadSir(dataBinding.root)
+                getViewModel().loadInitial(id, param!!)
             }
         }
 
     }
 
     override fun initView() {
-        mDataBind.recyclerView.layoutManager = LinearLayoutManager(context)
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.addItemDecoration(
+        dataBinding.recyclerView.layoutManager = LinearLayoutManager(context)
+        dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.addItemDecoration(
             SpacesItemDecoration(context).setParam(
                 resources.getColor(
                     R.color.line_color
                 ), 1.0f
             )
         )
-        mDataBind.refreshLayout.setEnableLoadMore(false)
-        mDataBind.refreshLayout.setOnRefreshListener {
-            mViewModel.loadRefresh(id, param!!)
-            mDataBind.refreshLayout.finishRefresh()
+        dataBinding.refreshLayout.setEnableLoadMore(false)
+        dataBinding.refreshLayout.setOnRefreshListener {
+            getViewModel().loadRefresh(id, param!!)
+            dataBinding.refreshLayout.finishRefresh()
         }
         adapter.setOnItemClickListener { _, _, position ->
-            val noticeModel = mViewModel.data.value?.get(position)
+            val noticeModel = getViewModel().data.value?.get(position)
             val intent = Intent(context, NoticeDetailsActivity::class.java)
             intent.putExtra("data", noticeModel)
             startActivity(intent)
@@ -77,7 +80,7 @@ class NoticeFragment private constructor() :
         adapter.setExpandListener(object : ExpandStatusListener {
             override fun expend(position: Int) {
                 val noticeModel = adapter.data[position]
-                mViewModel.updateNotic(id, noticeModel.NoticeId)
+                getViewModel().updateNotic(id, noticeModel.NoticeId)
 
             }
         })
@@ -88,7 +91,7 @@ class NoticeFragment private constructor() :
     }
 
     override fun initData() {
-        mViewModel.data.observe(this) {
+        getViewModel().data.observe(this) {
             adapter.data = it
             adapter.notifyDataSetChanged()
         }

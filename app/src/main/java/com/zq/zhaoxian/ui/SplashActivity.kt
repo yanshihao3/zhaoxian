@@ -48,7 +48,7 @@ class SplashActivity : BasePermissionActivity<SplashViewModel, AppActivitySplash
     }
 
     private fun toMain() {
-        mViewModel.load()
+        getViewModel().load()
         val kv = MMKV.defaultMMKV()
         val boolean = kv.decodeBool("isLogin", false)
         if (boolean) {

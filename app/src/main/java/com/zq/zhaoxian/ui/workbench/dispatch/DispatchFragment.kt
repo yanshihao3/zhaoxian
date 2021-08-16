@@ -30,7 +30,9 @@ class DispatchFragment private constructor() :
 
     @Inject
     lateinit var adapter: DispatchAdapter
-
+    val dataBinding by lazy {
+        getDataBind()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,22 +41,22 @@ class DispatchFragment private constructor() :
     }
 
     override fun onFragmentFirstVisible() {
-        mViewModel.load()
+        getViewModel().load()
         adapter.data = mutableListOf(Model(), Model())
     }
 
     override fun initView() {
-        mDataBind.recyclerView.layoutManager = LinearLayoutManager(context)
-        mDataBind.recyclerView.adapter = adapter
-        mDataBind.recyclerView.addItemDecoration(
+        dataBinding.recyclerView.layoutManager = LinearLayoutManager(context)
+        dataBinding.recyclerView.adapter = adapter
+        dataBinding.recyclerView.addItemDecoration(
             SpacesItemDecoration(context).setParam(
                 resources.getColor(
                     R.color.line_color
                 ), 1.0f
             )
         )
-        mDataBind.refreshLayout.setEnableLoadMore(true)
-        mDataBind.refreshLayout.setOnRefreshListener { loadData() }
+        dataBinding.refreshLayout.setEnableLoadMore(true)
+        dataBinding.refreshLayout.setOnRefreshListener { loadData() }
         /**
          * 提交处理界面
          */

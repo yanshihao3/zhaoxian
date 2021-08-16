@@ -10,7 +10,7 @@ class SituationEditActivity : BaseNoModelActivity<AppActivitySituationEditBindin
     override val layoutId: Int = R.layout.app_activity_situation_edit
 
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        getDataBind().toolbar.setBackOnClickListener {
             finish()
         }
     }

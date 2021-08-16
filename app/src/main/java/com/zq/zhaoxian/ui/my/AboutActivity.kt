@@ -13,7 +13,7 @@ class AboutActivity : BaseNoModelActivity<AppActivityAboutBinding>() {
     override val layoutId: Int = R.layout.app_activity_about
 
     override fun initView() {
-        mDataBind.toolbar.setBackOnClickListener {
+        getDataBind().toolbar.setBackOnClickListener {
             finish()
         }
     }
