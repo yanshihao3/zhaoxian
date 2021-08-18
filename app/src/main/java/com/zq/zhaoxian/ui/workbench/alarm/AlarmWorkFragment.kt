@@ -10,7 +10,6 @@ import com.zq.base.fragment.BaseLazyFragment
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentAlarmWorkBinding
 import com.zq.zhaoxian.http.model.UserInfo
-import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerAdapter
 import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerDetailActivity
 import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerHandleActivity
 import com.zq.zhaoxian.ui.workbench.hiddendanger.TaskModel
@@ -42,7 +41,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
         get() = R.layout.app_fragment_alarm_work
 
     @Inject
-    lateinit var adapter: DangerAdapter
+    lateinit var adapter: AlarmAdapter
 
     private var isRefresh = true
 
@@ -104,11 +103,11 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
 
         adapter.setOnItemChildClickListener { _, _, position ->
             if (param == "0") {
-                val intent = Intent(context, DangerHandleActivity::class.java)
+                val intent = Intent(context, AlarmDetailHandleActivity::class.java)
                 intent.putExtra("data", dataList[position])
                 startActivity(intent)
             } else {
-                val intent = Intent(context, DangerDetailActivity::class.java)
+                val intent = Intent(context, AlarmDetailActivity::class.java)
                 intent.putExtra("data", dataList[position])
                 startActivity(intent)
             }

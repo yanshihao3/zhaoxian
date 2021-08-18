@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:transitionName="share"
+        android:paddingBottom="10dp">
+
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="60dp">
+
+            <com.zq.base.view.NiceImageView
+                android:id="@+id/image"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                app:corner_radius="3dp"
+                app:srcCompat="@mipmap/cat" />
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/app_ic_alarm_video_play"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+
+</layout>

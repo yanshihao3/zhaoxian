@@ -98,26 +98,33 @@ class HomeFragment @Inject constructor() :
         dataBinding.unfinnish.setOnClickListener {
             val intent = Intent(mContext, DangerActivity::class.java)
             intent.putExtra("tab", 0)
-            startActivity(intent)
+            startActivityForResult(intent,1)
+
         }
 
         dataBinding.finnish.setOnClickListener {
             val intent = Intent(mContext, DangerActivity::class.java)
             intent.putExtra("tab", 1)
-            startActivity(intent)
+            startActivityForResult(intent,1)
         }
         dataBinding.alarmUnfinnish.setOnClickListener {
             val intent = Intent(mContext, AlarmWorkActivity::class.java)
             intent.putExtra("tab", 0)
-            startActivity(intent)
+            startActivityForResult(intent,1)
         }
         dataBinding.alarmFinnish.setOnClickListener {
             val intent = Intent(mContext, AlarmWorkActivity::class.java)
             intent.putExtra("tab", 1)
-            startActivity(intent)
+            startActivityForResult(intent,1)
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode==1){
+            activity.jumpFragment()
+        }
+    }
     override fun initData() {
         dataBinding.notice.setOnClickListener {
             startActivity(Intent(mContext, NoticeActivity::class.java))

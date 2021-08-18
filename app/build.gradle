@@ -20,7 +20,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-
+        ndk {
+            // add support lib
+            abiFilters 'armeabi-v7a' //, 'arm64-v8a'//, "mips"  //,'armeabi''x86',, 'x86_64',
+        }
     }
 
     signingConfigs {
@@ -97,8 +100,8 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
     //图片选择框架
     implementation 'com.yuyh.imgsel:library:2.1.0'
-    //图片展示库
-    implementation 'com.github.wanglu1209:PhotoViewer:0.50'
+
+    implementation project(":photoviewer")
 
 
     // CameraX core library using the camera2 implementation
@@ -128,6 +131,8 @@ dependencies {
     implementation 'com.tencent:mmkv-static:1.2.10'
     //饺子播放器
     implementation 'cn.jzvd:jiaozivideoplayer:7.7.0'
-
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.1'
+    //bugly
+    implementation 'com.tencent.bugly:crashreport:3.4.4' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
 
 }

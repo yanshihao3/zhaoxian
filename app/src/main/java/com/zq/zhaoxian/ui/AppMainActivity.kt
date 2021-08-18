@@ -1,5 +1,7 @@
 package com.zq.zhaoxian.ui
 
+import android.content.Intent
+import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -70,14 +72,17 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
             if (to is HomeFragment) {
                 EventBus.getDefault().post(MessageEvent("home", "0"))
             }
+            if (to is HomeFragment) {
+                EventBus.getDefault().post(MessageEvent("home", "0"))
+            }
 
         }
     }
 
-    fun jumpFragment(type: Int) {
-        getDataBind().bottomView.selectedItemId = R.id.navigation_workbench
 
-      //  mDataBind.bottomView.postDelayed(Runnable { workbenchFragment.switchTab(type) }, 100)
+
+    fun jumpFragment() {
+        getDataBind().bottomView.selectedItemId = R.id.navigation_workbench
     }
 
     private var exitTime: Long = 0 //退出activity计时

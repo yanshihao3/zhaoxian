@@ -2,34 +2,28 @@ package com.zq.zhaoxian.ui.workbench.alarm
 
 import android.app.ActivityOptions
 import android.content.Intent
-import android.util.Log
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.wanglu.photoviewerlibrary.PhotoViewer
 import com.zq.base.activity.BaseNoModelActivity
 import com.zq.zhaoxian.R
-import com.zq.zhaoxian.databinding.AppActivityAlarmDetailHandleBinding
+import com.zq.zhaoxian.databinding.AppActivityAlarmDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
-class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHandleBinding>() {
+class AlarmDetailActivity : BaseNoModelActivity<AppActivityAlarmDetailBinding>() {
 
-    override val layoutId: Int = R.layout.app_activity_alarm_detail_handle
+    override val layoutId: Int = R.layout.app_activity_alarm_detail
 
     val dataBinding by lazy {
         getDataBind()
     }
-    val launcher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
 
-            Log.e("TAG", ":${res.data} ==${res.resultCode}")
-        }
-
+    @Inject
+    lateinit var adapter: AlarmDetailImageAdapter
     val data =
         mutableListOf(
             "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Ftranslate%2F480%2Fw640h640%2F20180330%2F3hsz-fyssmmc7782215.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631701370&t=06c1e5e6c3fa706b8ad96da3e60d7730",
@@ -39,22 +33,16 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
             "https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218093206z8V1JuPlpe.mp4"
         )
 
-    @Inject
-    lateinit var adapter: AlarmDetailImageAdapter
-
     override fun initView() {
         dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
-        dataBinding.recyclerView.layoutManager = GridLayoutManager(mActivityContext, 3)
+        dataBinding.recyclerView.layoutManager = GridLayoutManager(mActivityContext, 2)
         dataBinding.recyclerView.adapter = adapter
         adapter.setNewInstance(data)
     }
 
     override fun initData() {
-        dataBinding.btnCommit.setOnClickListener {
-            launcher.launch(Intent(mActivityContext, AlarmHandleActivity::class.java))
-        }
         adapter.setOnItemChildClickListener { _, view, position ->
             if (data[position].contains("mp4")) {
                 val intent = Intent(this, VideoPlayActivity::class.java)
@@ -65,7 +53,6 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
                         view, "share"
                     ).toBundle()
                 )
-
             } else {
                 val list = data.filter { !it.contains("mp4") }
                 PhotoViewer
@@ -85,7 +72,9 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
                         isShowImage = false
                     }
                     .start(this)
+                //ZoomUtils.zoomImageFromThumb(this,view,data[position])
             }
+
         }
     }
 
@@ -97,5 +86,4 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
             super.onBackPressed()
 
     }
-
 }

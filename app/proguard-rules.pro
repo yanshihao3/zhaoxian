@@ -265,3 +265,6 @@
 -keep class tv.danmaku.ijk.media.player.** {*; }
 -dontwarn tv.danmaku.ijk.media.player.*
 -keep interface tv.danmaku.ijk.media.player.** { *; }
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

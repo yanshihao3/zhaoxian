@@ -1,6 +1,7 @@
 package com.zq.zhaoxian.application
 
 
+import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
 import com.zq.base.BaseApplication
 import com.zq.base.network.HeaderInterceptor
@@ -43,5 +44,7 @@ class MyApplication : BaseApplication() {
         registerActivityLifecycleCallbacks(MyActivityManager.getInstance())
 
         MMKV.initialize(this)
+        CrashReport.initCrashReport(this, "5ff8e15ad1", false)
+
     }
 }

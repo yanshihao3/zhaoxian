@@ -10,12 +10,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F8F8F9"
         android:orientation="vertical">
 
         <com.zq.zhaoxian.view.ToolbarView
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:background="@color/white"
             app:toolbar_back_visibility="gone"
             app:toolbar_title="工作台" />
 
@@ -39,53 +41,63 @@
         <!--            android:id="@+id/viewPager"-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="match_parent" />-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="任务"
-            android:textColor="#ff000000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:paddingBottom="12dp"
+            android:layout_height="wrap_content">
 
-            <com.zq.zhaoxian.view.MenuItemView
-                android:id="@+id/work"
-                android:layout_width="0dp"
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                app:menu_icon="@mipmap/app_ic_workbanch_work"
-                app:menu_title="排查任务" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="任务"
+                android:textColor="#ff000000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-            <com.zq.zhaoxian.view.MenuItemView
-                android:layout_width="0dp"
-                android:id="@+id/alarm"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                app:menu_icon="@mipmap/app_ic_workbench_alarm"
-                app:menu_title="告警任务" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                <com.zq.zhaoxian.view.MenuItemView
+                    android:id="@+id/work"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:menu_icon="@mipmap/app_ic_workbanch_work"
+                    app:menu_title="排查任务" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                <com.zq.zhaoxian.view.MenuItemView
+                    android:id="@+id/alarm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:menu_icon="@mipmap/app_ic_workbench_alarm"
+                    app:menu_title="告警任务" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
         </LinearLayout>
-
-
     </LinearLayout>
 </layout>
