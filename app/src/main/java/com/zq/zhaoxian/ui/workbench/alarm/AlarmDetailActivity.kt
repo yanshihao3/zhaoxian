@@ -2,14 +2,26 @@ package com.zq.zhaoxian.ui.workbench.alarm
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.view.View
 import android.widget.ImageView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
+import com.hjq.toast.ToastUtils
 import com.wanglu.photoviewerlibrary.PhotoViewer
+import com.zq.base.BaseApplication
 import com.zq.base.activity.BaseNoModelActivity
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppActivityAlarmDetailBinding
+import com.zq.zhaoxian.http.HomeNetWork
+import com.zq.zhaoxian.http.model.AlarmInfoDetailEntry
+import com.zq.zhaoxian.http.model.AlarmInfoEntry
+import com.zq.zhaoxian.http.model.Enclosure
+import com.zq.zhaoxian.utils.toRequestBody
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -21,32 +33,70 @@ class AlarmDetailActivity : BaseNoModelActivity<AppActivityAlarmDetailBinding>()
     val dataBinding by lazy {
         getDataBind()
     }
+    val alarmInfoEntry by lazy {
+        intent.getParcelableExtra<AlarmInfoEntry>("data")
+    }
 
     @Inject
     lateinit var adapter: AlarmDetailImageAdapter
-    val data =
-        mutableListOf(
-            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fn.sinaimg.cn%2Ftranslate%2F480%2Fw640h640%2F20180330%2F3hsz-fyssmmc7782215.jpg&refer=http%3A%2F%2Fn.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631701370&t=06c1e5e6c3fa706b8ad96da3e60d7730",
-            "https://img1.baidu.com/it/u=52681052,678098948&fm=253&fmt=auto&app=120&f=JPEG?w=1000&h=400",
-            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbaike.soso.com%2Fp%2F20090713%2F20090713194934-1708924711.jpg&refer=http%3A%2F%2Fbaike.soso.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631703722&t=9f4f34e1b9b8f7237f97a3e1b4dbbc35",
-            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fs11.sinaimg.cn%2Fbmiddle%2F494691675c8d85c6e184a&refer=http%3A%2F%2Fs11.sinaimg.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1631703722&t=6fb5e425741bb5deb764ae1d34c05bad",
-            "https://stream7.iqilu.com/10339/upload_transcode/202002/18/20200218093206z8V1JuPlpe.mp4"
-        )
+
+    val data = mutableListOf<Enclosure>()
 
     override fun initView() {
         dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
+        dataBinding.data = alarmInfoEntry
         dataBinding.recyclerView.layoutManager = GridLayoutManager(mActivityContext, 2)
         dataBinding.recyclerView.adapter = adapter
-        adapter.setNewInstance(data)
+        setLoadSir(dataBinding.root)
+        showContent()
+        request()
     }
+
+    private fun request() {
+        lifecycleScope.launch {
+            try {
+                showLoading()
+                var alarmDetail: AlarmInfoDetailEntry? = null
+                withContext(Dispatchers.IO) {
+                    val params = hashMapOf<String, Any>()
+                    params["alarmId"] = alarmInfoEntry!!.alarmId
+                    params["workOrderCode"] = alarmInfoEntry!!.taskNumber
+                    params["isEnd"] = true
+                    alarmDetail =
+                        HomeNetWork.getInstance()
+                            .getSecurityTaskDetail(params.toRequestBody()).result
+                }
+                alarmDetail?.let {
+                    it.imgList?.forEach { img ->
+                        data.add(img)
+                    }
+                    it.videoList?.forEach { video ->
+                        data.add(video)
+                    }
+                    dataBinding.date.text = it.logs?.operationDate
+                    dataBinding.desc.text = it.logs?.operationContent
+                    if (data.isEmpty()) {
+                        dataBinding.rvContainer.visibility = View.GONE
+                        dataBinding.viewLine.visibility = View.GONE
+                    }
+                    adapter.setNewInstance(data)
+                }
+            } catch (e: Exception) {
+                ToastUtils.show("网络异常")
+            } finally {
+                showContent()
+            }
+        }
+    }
+
 
     override fun initData() {
         adapter.setOnItemChildClickListener { _, view, position ->
-            if (data[position].contains("mp4")) {
+            if (data[position].type == "VIDEO") {
                 val intent = Intent(this, VideoPlayActivity::class.java)
-                intent.putExtra("path", data[position])
+                intent.putExtra("path", data[position].path)
                 startActivity(
                     intent, ActivityOptions.makeSceneTransitionAnimation(
                         this,
@@ -54,7 +104,7 @@ class AlarmDetailActivity : BaseNoModelActivity<AppActivityAlarmDetailBinding>()
                     ).toBundle()
                 )
             } else {
-                val list = data.filter { !it.contains("mp4") }
+                val list = data.filter { it.type == "IMAGE" }.map { it.path }
                 PhotoViewer
                     .setData(list as ArrayList<String>)
                     .setCurrentPage(position)
@@ -62,7 +112,9 @@ class AlarmDetailActivity : BaseNoModelActivity<AppActivityAlarmDetailBinding>()
                     .setIndicatorType(PhotoViewer.INDICATOR_TYPE_TEXT)
                     .setShowImageViewInterface(object : PhotoViewer.ShowImageViewInterface {
                         override fun show(iv: ImageView, url: String) {
-                            iv.load(url)
+                            iv.load(url) {
+                                addHeader("access-token", BaseApplication.access_token)
+                            }
                         }
                     })
                     .setOnPhotoViewerCreatedListener {

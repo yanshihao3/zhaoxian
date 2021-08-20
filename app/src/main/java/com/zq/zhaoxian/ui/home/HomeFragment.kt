@@ -47,13 +47,14 @@ class HomeFragment @Inject constructor() :
     val dataBinding by lazy {
         getDataBind()
     }
-    val viewModel by lazy { 
+    val viewModel by lazy {
         getViewModel()
     }
     private val data = mutableListOf<TouTiao.Data>()
     private val list = mutableListOf<String>()
 
     private var userId: String = ""
+    private var portalUserId: String = ""
 
     private val bannerAdapter = object : BannerImageAdapter<String>(list) {
         override fun onBindView(
@@ -91,40 +92,41 @@ class HomeFragment @Inject constructor() :
         dataBinding.refreshLayout.setEnableLoadMore(false)
 
         dataBinding.refreshLayout.setOnRefreshListener {
-            viewModel.queryHomeInfo(userId)
+            viewModel.queryHomeInfo(userId, portalUserId)
             dataBinding.refreshLayout.finishRefresh()
         }
 
         dataBinding.unfinnish.setOnClickListener {
             val intent = Intent(mContext, DangerActivity::class.java)
             intent.putExtra("tab", 0)
-            startActivityForResult(intent,1)
+            startActivityForResult(intent, 1)
 
         }
 
         dataBinding.finnish.setOnClickListener {
             val intent = Intent(mContext, DangerActivity::class.java)
             intent.putExtra("tab", 1)
-            startActivityForResult(intent,1)
+            startActivityForResult(intent, 1)
         }
         dataBinding.alarmUnfinnish.setOnClickListener {
             val intent = Intent(mContext, AlarmWorkActivity::class.java)
             intent.putExtra("tab", 0)
-            startActivityForResult(intent,1)
+            startActivityForResult(intent, 1)
         }
         dataBinding.alarmFinnish.setOnClickListener {
             val intent = Intent(mContext, AlarmWorkActivity::class.java)
             intent.putExtra("tab", 1)
-            startActivityForResult(intent,1)
+            startActivityForResult(intent, 1)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode==1){
+        if (requestCode == 1) {
             activity.jumpFragment()
         }
     }
+
     override fun initData() {
         dataBinding.notice.setOnClickListener {
             startActivity(Intent(mContext, NoticeActivity::class.java))
@@ -154,12 +156,23 @@ class HomeFragment @Inject constructor() :
             bannerAdapter.setDatas(list);
             bannerAdapter.notifyDataSetChanged()
             for (info in workInfo) {
-                if (info.ZQIOT__state__CST == "未处理") {
-                    dataBinding.pendingNumber.text = info.count.toString()
+                if (info.type == "task") {
+                    if (info.ZQIOT__state__CST == "未处理") {
+                        dataBinding.pendingNumber.text = info.count.toString()
+                    }
+                    if (info.ZQIOT__state__CST == "已完成") {
+                        dataBinding.finishNumber.text = info.count.toString()
+                    }
                 }
-                if (info.ZQIOT__state__CST == "已完成") {
-                    dataBinding.finishNumber.text = info.count.toString()
+                if (info.type == "alarm") {
+                    if (info.ZQIOT__state__CST == "未处理") {
+                        dataBinding.alarmPendingNumber.text = info.count.toString()
+                    }
+                    if (info.ZQIOT__state__CST == "已完成") {
+                        dataBinding.alarmFinishNumber.text = info.count.toString()
+                    }
                 }
+
             }
         }
     }
@@ -278,7 +291,8 @@ class HomeFragment @Inject constructor() :
         if (string != null) {
             val info = Gson().fromJson(string, UserInfo.Info::class.java)
             userId = info.id
-            viewModel.queryHomeInfo(userId)
+            portalUserId = info.portalUser
+            viewModel.queryHomeInfo(userId, portalUserId)
         }
     }
 
@@ -287,7 +301,7 @@ class HomeFragment @Inject constructor() :
     fun onMessageEvent(event: MessageEvent) {
         if (event.type == "home") {
             if (userId != "")
-                viewModel.queryHomeInfo(userId)
+                viewModel.queryHomeInfo(userId, portalUserId)
         }
     }
 

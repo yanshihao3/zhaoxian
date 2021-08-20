@@ -2,22 +2,17 @@ package com.zq.zhaoxian.http
 
 import com.zq.base.network.RetrofitClient
 import com.zq.zhaoxian.http.api.NoticeService
-import com.zq.zhaoxian.http.model.TouTiao
 import okhttp3.RequestBody
-import retrofit2.http.Url
-
 
 /**
  */
 class HomeNetWork {
-
 
     private val mNoticeService by lazy {
         RetrofitClient.getInstance().create(NoticeService::class.java)
     }
 
     suspend fun getToken() = mNoticeService.getToken()
-
 
     suspend fun queryNotice(body: RequestBody) = mNoticeService.queryNotice(body)
 
@@ -37,7 +32,13 @@ class HomeNetWork {
 
     suspend fun queryTaskinfoByPersonId(body: RequestBody) = mNoticeService.queryTaskinfoByPersonId(body)
 
+    suspend fun querySecurityTaskList(body: RequestBody) = mNoticeService.querySecurityTaskList(body)
+
     suspend fun queryhidderInfoBytaskId(body: RequestBody) = mNoticeService.queryhidderInfoBytaskId(body)
+
+    suspend fun getSecurityTaskDetail(body: RequestBody) = mNoticeService.getSecurityTaskDetail(body)
+
+    suspend fun saveProcessWork(body: RequestBody) = mNoticeService.saveProcessWork(body)
 
     suspend fun rectification(body: RequestBody) = mNoticeService.rectification(body)
 

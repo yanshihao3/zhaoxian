@@ -5,7 +5,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppRecycleviewAlarmItemBinding
-import com.zq.zhaoxian.ui.workbench.hiddendanger.TaskModel
+import com.zq.zhaoxian.http.model.AlarmInfoEntry
 import javax.inject.Inject
 
 /**
@@ -18,7 +18,7 @@ import javax.inject.Inject
  * @create: 2021-08-16 17:43
  **/
 class AlarmAdapter @Inject constructor() :
-    BaseQuickAdapter<TaskModel.TaskInfo, BaseViewHolder>(R.layout.app_recycleview_alarm_item) {
+    BaseQuickAdapter<AlarmInfoEntry, BaseViewHolder>(R.layout.app_recycleview_alarm_item) {
     init {
         addChildClickViewIds(R.id.details)
     }
@@ -28,10 +28,10 @@ class AlarmAdapter @Inject constructor() :
         DataBindingUtil.bind<AppRecycleviewAlarmItemBinding>(viewHolder.itemView)
     }
 
-    override fun convert(holder: BaseViewHolder, item: TaskModel.TaskInfo) {
+    override fun convert(holder: BaseViewHolder, item: AlarmInfoEntry) {
         val binding = DataBindingUtil.getBinding<AppRecycleviewAlarmItemBinding>(holder.itemView)
         binding?.let {
-
+            binding.data = item
         }
 
     }

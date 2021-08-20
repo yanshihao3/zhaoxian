@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'kotlin-android-extensions'
 
 def releaseTime() {
     return new Date().format("yyyy-MM-dd")
@@ -62,6 +63,9 @@ android {
         viewBinding true
     }
 
+    androidExtensions {
+        experimental = true
+    }
 
     applicationVariants.all {
         variant ->

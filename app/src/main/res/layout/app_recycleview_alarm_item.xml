@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.zq.zhaoxian.http.model.AlarmInfoEntry" />
 
     </data>
 
@@ -21,9 +24,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:text="@{data.alarmTypeStr+`-------`+data.workorderPriority}"
             android:textColor="#ff333333"
             android:textSize="14sp"
-            android:text="消防告警--------高"
             tools:text="显示告警类型字段内容+等级字段内容" />
 
 
@@ -36,10 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="80dp"
+                android:text="@{data.occurPlace+`\n`+data.description}"
                 android:textColor="#8a000000"
-                android:text="显示“详细地址及描述”字段内容"
-                android:textSize="12sp"
-                 />
+                android:textSize="12sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -47,6 +50,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:text="@{data.assigneeName}"
                 android:textColor="#8a000000"
                 android:textSize="12sp" />
         </RelativeLayout>

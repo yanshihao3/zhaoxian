@@ -9,6 +9,7 @@ import com.zq.base.decoration.SpacesItemDecoration
 import com.zq.base.fragment.BaseLazyFragment
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentAlarmWorkBinding
+import com.zq.zhaoxian.http.model.AlarmInfoEntry
 import com.zq.zhaoxian.http.model.UserInfo
 import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerDetailActivity
 import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerHandleActivity
@@ -30,9 +31,9 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
         arguments?.let {
             param = it.getString(ARG_PARAM)
             status = if (param == "0") {
-                "待处理"
+                "START+NORMAL"
             } else {
-                "已完成"
+                "END"
             }
         }
     }
@@ -45,7 +46,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
 
     private var isRefresh = true
 
-    private val dataList = mutableListOf<TaskModel.TaskInfo>()
+    private val dataList = mutableListOf<AlarmInfoEntry>()
 
     var userId = ""
 
@@ -81,12 +82,12 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
         viewModel.data.observe(this) {
             if (isRefresh) {
                 dataList.clear()
-                dataList.addAll(it.taskInfo)
+                dataList.addAll(it.list)
                 adapter.data = dataList
                 adapter.notifyDataSetChanged()
             } else {
-                dataList.addAll(it.taskInfo)
-                if (it.taskInfo.isEmpty()) {
+                dataList.addAll(it.list)
+                if (it.list.isEmpty()) {
                     dataBinding.refreshLayout.finishLoadMoreWithNoMoreData()
                 } else {
                     dataBinding.refreshLayout.finishLoadMore()
@@ -126,7 +127,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
 
             if (string != null) {
                 val info = Gson().fromJson(string, UserInfo.Info::class.java)
-                userId = info.id
+                userId = info.portalUser
                 viewModel.loadInitial(userId, status!!)
             }
         }

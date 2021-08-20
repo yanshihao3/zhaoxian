@@ -18,6 +18,7 @@ data class HomeModel(
 
     data class Info(
         val ZQIOT__state__CST: String,
-        val count: Int
+        val count: Int,
+        val type: String
     )
 }

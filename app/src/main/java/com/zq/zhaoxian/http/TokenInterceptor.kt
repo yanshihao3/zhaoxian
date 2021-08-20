@@ -1,6 +1,5 @@
 package com.zq.zhaoxian.http
 
-import android.util.Log
 import com.zq.base.BaseApplication
 import kotlinx.coroutines.*
 import okhttp3.Interceptor

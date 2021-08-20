@@ -12,6 +12,7 @@ import com.zq.zhaoxian.common.MessageEvent
 import com.zq.zhaoxian.databinding.AppActivityDangerBinding
 import com.zq.zhaoxian.databinding.AppActivityHandleDangerBinding
 import com.zq.zhaoxian.http.HomeNetWork
+import com.zq.zhaoxian.http.model.ChangeWork
 import com.zq.zhaoxian.ui.my.CommitDialogFragment
 import com.zq.zhaoxian.utils.toRequestBody
 import com.zq.zhaoxian.view.recycle.FormLayoutManager
@@ -40,6 +41,7 @@ class DangerHandleActivity : BaseActivity<ViewModel, AppActivityHandleDangerBind
     val dataBinding by lazy {
         getDataBind()
     }
+
     @Inject
     lateinit var commitDialogFragment: CommitDialogFragment
     private lateinit var adapter: MonsterHAdapter
@@ -96,19 +98,24 @@ class DangerHandleActivity : BaseActivity<ViewModel, AppActivityHandleDangerBind
                 return@setOnClickListener
             }
             lifecycleScope.launch {
-                commitDialogFragment.show(supportFragmentManager, "")
-                val params = hashMapOf<String, Any>()
-                params["id"] = taskInfo.id
-                params["data"] = dataBinding.time.text.toString()
-                withContext(Dispatchers.IO) {
-                    val result = HomeNetWork.getInstance().rectification(params.toRequestBody())
+                try {
+                    commitDialogFragment.show(supportFragmentManager, "")
+                    val params = hashMapOf<String, Any>()
+                    params["id"] = taskInfo.id
+                    params["data"] = dataBinding.time.text.toString()
+                    val result = withContext(Dispatchers.IO) {
+                        HomeNetWork.getInstance().rectification(params.toRequestBody())
+                    }
                     if (result.resCode == "0") {
                         ToastUtils.show("整改成功")
                         EventBus.getDefault().post(MessageEvent("home", "0"))
                         finish()
                     }
+                } catch (e: Exception) {
+                    ToastUtils.show("网络异常")
+                } finally {
+                    commitDialogFragment.dismiss()
                 }
-                commitDialogFragment.dismiss()
             }
         }
         dataBinding.cancel.setOnClickListener {

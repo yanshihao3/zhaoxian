@@ -71,9 +71,10 @@ class HomeViewModel : BaseViewModel() {
         }
     }
 
-    fun queryHomeInfo(userId: String) {
+    fun queryHomeInfo(userId: String, portalUserId: String) {
         val params = hashMapOf<String, Any>()
         params["id"] = userId
+        params["portalUserId"] = portalUserId
         launchOnlyresult({
             HomeNetWork.getInstance().queryHomeInfo(params.toRequestBody())
         }, {

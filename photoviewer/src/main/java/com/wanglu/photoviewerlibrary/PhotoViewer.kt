@@ -453,7 +453,7 @@ object PhotoViewer {
     }
 
     fun exit() {
-        fragments[currentPage].exit()
+        fragments[currentPage]?.exit()
     }
 
 }

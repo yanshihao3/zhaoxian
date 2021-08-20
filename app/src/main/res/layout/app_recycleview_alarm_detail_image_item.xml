@@ -5,15 +5,14 @@
 
     <data>
 
-
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:transitionName="share"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:transitionName="share">
 
         <FrameLayout
             android:layout_width="80dp"
@@ -24,8 +23,7 @@
                 android:layout_width="80dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                app:corner_radius="3dp"
-                app:srcCompat="@mipmap/cat" />
+                app:corner_radius="3dp" />
 
             <ImageView
                 android:id="@+id/play"

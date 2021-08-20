@@ -1574,72 +1574,41 @@ public final class ImageUtils {
 
     /**
      * 获取视频第一帧
+     *
      * @param filePath
      * @param kind
      * @return
      */
-    public static Bitmap createVideoThumbnail(String filePath, int kind)
-    {
+    public static Bitmap createVideoThumbnail(String filePath, int kind) {
         Bitmap bitmap = null;
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-        try
-        {
-            if (filePath.startsWith("http://")
-                    || filePath.startsWith("https://")
-                    || filePath.startsWith("widevine://"))
-            {
-                retriever.setDataSource(filePath, new HashMap<>());
-            }
-            else
-            {
-                retriever.setDataSource(filePath);
-            }
+        try {
+            retriever.setDataSource(filePath, new HashMap<>());
             bitmap = retriever.getFrameAtTime(); //retriever.getFrameAtTime(-1);
-        }
-        catch (IllegalArgumentException ex)
-        {
-            // Assume this is a corrupt video file
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        catch (RuntimeException ex)
-        {
-            // Assume this is a corrupt video file.
-            ex.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 retriever.release();
-            }
-            catch (RuntimeException ex)
-            {
-                // Ignore failures while cleaning up.
+            } catch (RuntimeException ex) {
                 ex.printStackTrace();
             }
         }
-
-        if (bitmap == null)
-        {
+        if (bitmap == null) {
             return null;
         }
-
-        if (kind == MediaStore.Images.Thumbnails.MINI_KIND)
-        {//压缩图片 开始处
+        if (kind == MediaStore.Images.Thumbnails.MINI_KIND) {//压缩图片 开始处
             // Scale down the bitmap if it's too large.
             int width = bitmap.getWidth();
             int height = bitmap.getHeight();
             int max = Math.max(width, height);
-            if (max > 512)
-            {
+            if (max > 512) {
                 float scale = 512f / max;
                 int w = Math.round(scale * width);
                 int h = Math.round(scale * height);
                 bitmap = Bitmap.createScaledBitmap(bitmap, w, h, true);
             }//压缩图片 结束处
-        }
-        else if (kind == MediaStore.Images.Thumbnails.MICRO_KIND)
-        {
+        } else if (kind == MediaStore.Images.Thumbnails.MICRO_KIND) {
             bitmap = ThumbnailUtils.extractThumbnail(bitmap,
                     96,
                     96,
@@ -1647,7 +1616,6 @@ public final class ImageUtils {
         }
         return bitmap;
     }
-
 
 
 }

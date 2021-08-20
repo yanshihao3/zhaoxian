@@ -3,7 +3,7 @@ package com.zq.zhaoxian.ui.workbench.alarm
 import androidx.lifecycle.MutableLiveData
 import com.zq.base.viewmodel.BaseViewModel
 import com.zq.zhaoxian.http.HomeNetWork
-import com.zq.zhaoxian.ui.workbench.hiddendanger.TaskModel
+import com.zq.zhaoxian.http.model.AlarmInfoResult
 import com.zq.zhaoxian.utils.toRequestBody
 
 /**
@@ -19,25 +19,27 @@ class AlarmViewModel : BaseViewModel() {
     override fun load() {
     }
     val data by lazy {
-        MutableLiveData<TaskModel>()
+        MutableLiveData<AlarmInfoResult>()
     }
 
     var pageSize = 10
 
-    var current = 0
+    var current = 1
 
 
     fun loadRefresh(userId: String, status: String) {
-        current = 0
+        current = 1
         pageSize = 10
         val params = hashMapOf<String, Any>()
         params["pageSize"] = pageSize
-        params["current"] = current
-        params["status"] = status
-        params["id"] = userId
+        params["pageNum"] = current
+        params["workOrderStatusCode"] = status
+        params["processor"] = userId
+        params["isAppRequest"] = true
+
 
         launchOnlyresult({
-            HomeNetWork.getInstance().queryTaskinfoByPersonId(params.toRequestBody())
+            HomeNetWork.getInstance().querySecurityTaskList(params.toRequestBody())
         }, {
             data.value = it
         }, isShowDialog = false
@@ -45,16 +47,17 @@ class AlarmViewModel : BaseViewModel() {
     }
 
     fun loadInitial(userId: String, status: String) {
-        current = 0
+        current = 1
         pageSize = 10
         val params = hashMapOf<String, Any>()
         params["pageSize"] = pageSize
-        params["current"] = current
-        params["status"] = status
-        params["id"] = userId
+        params["pageNum"] = current
+        params["workOrderStatusCode"] = status
+        params["processor"] = userId
+        params["isAppRequest"] = true
 
         launchOnlyresult({
-            HomeNetWork.getInstance().queryTaskinfoByPersonId(params.toRequestBody())
+            HomeNetWork.getInstance().querySecurityTaskList(params.toRequestBody())
         }, {
             data.value = it
         }, isShowDialog = true
@@ -65,12 +68,14 @@ class AlarmViewModel : BaseViewModel() {
         current++
         val params = hashMapOf<String, Any>()
         params["pageSize"] = pageSize
-        params["current"] = current
-        params["status"] = status
-        params["id"] = userId
+        params["pageNum"] = current
+        params["workOrderStatusCode"] = status
+        params["processor"] = userId
+        params["isAppRequest"] = true
+
 
         launchOnlyresult({
-            HomeNetWork.getInstance().queryTaskinfoByPersonId(params.toRequestBody())
+            HomeNetWork.getInstance().querySecurityTaskList(params.toRequestBody())
         }, {
             data.value = it
         }, isShowDialog = false

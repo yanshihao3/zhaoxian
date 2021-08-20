@@ -75,6 +75,33 @@ interface NoticeService {
     ): BaseResult<TaskModel>
 
     /**
+     * 查询告警任务
+     */
+    @Headers("Content-Type: application/json", "Accept: */*")//需要添加头
+    @POST("/service/ZQIOT__InformationDelivery/1.0.0/querySecurityTaskList")
+    suspend fun querySecurityTaskList(
+        @Body body: RequestBody
+    ): BaseResult<AlarmInfoResult>
+
+ /**
+     * 查询告警任务详情
+     */
+    @Headers("Content-Type: application/json", "Accept: */*")//需要添加头
+    @POST("/service/ZQIOT__InformationDelivery/1.0.0/getSecurityTaskDetail")
+    suspend fun getSecurityTaskDetail(
+        @Body body: RequestBody
+    ): BaseResult<AlarmInfoDetailEntry>
+    /**
+     * 处理告警任务
+     */
+    @Headers("Content-Type: application/json", "Accept: */*")//需要添加头
+    @POST("/service/ZQIOT__InformationDelivery/1.0.0/saveProcessWork")
+    suspend fun saveProcessWork(
+        @Body body: RequestBody
+    ): BaseResult<ProcessEntry>
+
+
+    /**
      * 查询排查任务
      */
     @Headers("Content-Type: application/json", "Accept: */*")//需要添加头

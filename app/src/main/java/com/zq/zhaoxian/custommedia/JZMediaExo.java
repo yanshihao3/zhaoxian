@@ -32,8 +32,11 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
+import com.zq.base.BaseApplication;
 import com.zq.zhaoxian.R;
 
 import cn.jzvd.JZMediaInterface;
@@ -91,9 +94,20 @@ public class JZMediaExo extends JZMediaInterface implements Player.EventListener
                     .setLoadControl(loadControl)
                     .setBandwidthMeter(bandwidthMeter)
                     .build();
-            // Produces DataSource instances through which media data is loaded.
+
+
+            /**
+             * 添加播放视频需要 token
+             */
+            DefaultHttpDataSourceFactory defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory();
+            HttpDataSource.RequestProperties defaultRequestProperties = defaultHttpDataSourceFactory.getDefaultRequestProperties();
+            defaultRequestProperties.set("access-token", BaseApplication.getAccess_token());
+
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-                    Util.getUserAgent(context, context.getResources().getString(R.string.app_name)));
+                    defaultHttpDataSourceFactory);
+           /* // Produces DataSource instances through which media data is loaded.
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                    Util.getUserAgent(context, context.getResources().getString(R.string.app_name)));*/
 
             String currUrl = jzvd.jzDataSource.getCurrentUrl().toString();
             MediaSource videoSource;
