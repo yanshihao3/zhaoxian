@@ -1,6 +1,6 @@
 package com.zq.zhaoxian.ui
 
-import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
@@ -16,7 +16,6 @@ import com.zq.zhaoxian.ui.my.MyFragment
 import com.zq.zhaoxian.ui.workbench.WorkbenchFragment
 import com.zq.zhaoxian.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Runnable
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
@@ -36,17 +35,81 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
 
     private lateinit var fromFragment: Fragment
 
-    override fun initView() {
-        fromFragment = homeFragment
+    private var position = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getInt("position")
+            initFragment()
+        }
+        addFragment()
+
+    }
+
+    private fun addFragment() {
+
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.container, fromFragment)
+        if (!homeFragment.isAdded) {
+            transaction.add(R.id.container, homeFragment, "home")
+        }
+        if (!workbenchFragment.isAdded) {
+            transaction.add(R.id.container, workbenchFragment, "work")
+        }
+        if (!myFragment.isAdded) {
+            transaction.add(R.id.container, myFragment, "my")
+        }
+        when (position) {
+            0 -> {
+                transaction.hide(myFragment).hide(workbenchFragment).show(homeFragment)
+                fromFragment = homeFragment
+            }
+            1 -> {
+                transaction.hide(myFragment).hide(homeFragment).show(workbenchFragment)
+                fromFragment = workbenchFragment
+            }
+            2 -> {
+                transaction.hide(homeFragment).hide(workbenchFragment).show(myFragment)
+                fromFragment = myFragment
+            }
+        }
         transaction.commit()
+
+    }
+
+
+    private fun initFragment() {
+        homeFragment = supportFragmentManager.findFragmentByTag("home") as HomeFragment
+        workbenchFragment = supportFragmentManager.findFragmentByTag("work") as WorkbenchFragment
+        myFragment = supportFragmentManager.findFragmentByTag("my") as MyFragment
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("TAG", "onDestroy: ")
+    }
+
+    override fun initView() {
+
         getDataBind().bottomView.setOnNavigationItemSelectedListener {
             val fragCategory = when (it.itemId) {
-                R.id.navigation_home -> homeFragment
-                R.id.navigation_workbench -> workbenchFragment
-                R.id.navigation_my -> myFragment
-                else -> homeFragment
+                R.id.navigation_home -> {
+                    position = 0
+                    homeFragment
+                }
+                R.id.navigation_workbench -> {
+                    position = 1
+                    workbenchFragment
+                }
+                R.id.navigation_my -> {
+                    position = 2
+                    myFragment
+                }
+                else -> {
+                    position = 0
+                    homeFragment
+                }
             }
             switchFragment(fromFragment, fragCategory)
             fromFragment = fragCategory
@@ -60,18 +123,12 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
     }
 
     private fun switchFragment(from: Fragment, to: Fragment) {
-        if (from !== to) {
+        if (from != to) {
             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            if (!to.isAdded) {
-                transaction.hide(from)
-                transaction.add(R.id.container, to).commit()
-            } else {
-                transaction.hide(from)
-                transaction.show(to).commit()
-            }
-            if (to is HomeFragment) {
-                EventBus.getDefault().post(MessageEvent("home", "0"))
-            }
+
+            transaction.hide(from)
+            transaction.show(to).commit()
+
             if (to is HomeFragment) {
                 EventBus.getDefault().post(MessageEvent("home", "0"))
             }
@@ -79,6 +136,10 @@ class AppMainActivity : BaseActivity<MainViewModel, AppActivityMainBinding>() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("position", position)
+    }
 
 
     fun jumpFragment() {

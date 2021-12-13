@@ -5,8 +5,6 @@ import android.app.Activity
 import  android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.ViewAnimationUtils
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -138,14 +136,16 @@ class HomeFragment @Inject constructor() :
             adapter.notifyDataSetChanged()
         }
 
-        viewModel.weather.observe(this) {
-            dataBinding.temperature.text = it.result.realtime.temperature
-            dataBinding.windPower.text = it.result.realtime.direct + it.result.realtime.power
-            dataBinding.weather.text = it.result.realtime.info
-            val temperature = it.result.future[0].temperature
-            val split = temperature.split("/")
-            dataBinding.desc.text = "最低${split[0]}℃ 最高${split[1]}"
-            showWeatherImage(it.result.realtime.wid)
+        viewModel.weather.observe(this) { weather ->
+            weather.result?.let {
+                dataBinding.temperature.text = it.realtime.temperature
+                dataBinding.windPower.text = it.realtime.direct + it.realtime.power
+                dataBinding.weather.text = it.realtime.info
+                val temperature = it.future[0].temperature
+                val split = temperature.split("/")
+                dataBinding.desc.text = "最低${split[0]}℃ 最高${split[1]}"
+                showWeatherImage(it.realtime.wid)
+            }
 
         }
         viewModel.homeModel.observe(this) {

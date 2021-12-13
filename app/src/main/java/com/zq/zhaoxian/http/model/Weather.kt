@@ -5,7 +5,7 @@ import java.io.Serializable
 data class Weather(
     val error_code: Int,
     val reason: String,
-    val result: Result
+    val result: Result?
 ):Serializable
 
 data class Wid(

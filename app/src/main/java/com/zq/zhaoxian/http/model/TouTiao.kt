@@ -12,7 +12,7 @@ package com.zq.zhaoxian.http.model
 data class TouTiao(
     val error_code: Int,
     val reason: String,
-    val result: Result
+    val result: Result?
 ) {
     data class Result(
         val `data`: List<Data>,

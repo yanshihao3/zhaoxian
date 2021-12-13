@@ -33,4 +33,9 @@ class FinishAdapter @Inject constructor() :
             it.data = item
         }
     }
+
+    override fun onViewAttachedToWindow(holder: BaseViewHolder) {
+        super.onViewAttachedToWindow(holder)
+
+    }
 }

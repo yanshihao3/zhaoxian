@@ -39,14 +39,18 @@ class HomeViewModel : BaseViewModel() {
             try {
                 withContext(Dispatchers.IO) {
                     val data = HomeNetWork.getInstance().queryWeather(url)
-                    weather.postValue(data)
-                    aCache.put("weather", GsonUtils.toJson(data))
+                    if (data.result != null) {
+                        weather.postValue(data)
+                        aCache.put("weather", GsonUtils.toJson(data))
+                    } else {
+                        val asString = aCache.getAsString("weather")
+                        val fromLocalJson =
+                            GsonUtils.fromLocalJson<Weather>(asString, Weather::class.java)
+                        weather.value = fromLocalJson!!
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("TAG", "queryWeather: ${e.printStackTrace()}")
-                val asString = aCache.getAsString("weather")
-                val fromLocalJson = GsonUtils.fromLocalJson<Weather>(asString, Weather::class.java)
-                weather.value = fromLocalJson!!
             }
         }
 
@@ -59,8 +63,15 @@ class HomeViewModel : BaseViewModel() {
             try {
                 withContext(Dispatchers.IO) {
                     val data = HomeNetWork.getInstance().queryTouTiao(url)
-                    touTiaoData.postValue(data.result.data)
-                    aCache.put("toutiao", GsonUtils.toJson(data))
+                    if (data.result?.data != null) {
+                        touTiaoData.postValue(data.result.data)
+                        aCache.put("toutiao", GsonUtils.toJson(data))
+                    } else {
+                        val asString = aCache.getAsString("toutiao")
+                        val fromLocalJson =
+                            GsonUtils.fromLocalJson<TouTiao>(asString, TouTiao::class.java)
+                        touTiaoData.value = fromLocalJson?.result?.data
+                    }
                 }
 
             } catch (e: Exception) {

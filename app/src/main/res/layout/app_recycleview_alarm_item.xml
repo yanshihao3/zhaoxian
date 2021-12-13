@@ -40,7 +40,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="80dp"
-                android:text="@{data.occurPlace+`\n`+data.description}"
+                android:text="@{data.description}"
                 android:textColor="#8a000000"
                 android:textSize="12sp" />
 

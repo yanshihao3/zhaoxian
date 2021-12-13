@@ -2,6 +2,7 @@ package com.zq.zhaoxian.ui.workbench.hiddendanger
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
@@ -33,6 +34,7 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
     val dataBinding by lazy {
         getDataBind()
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -59,6 +61,7 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
     var isFirst = false
 
     override fun initView() {
+        adapter.setDiffCallback(DiffCallBack())
         dataBinding.recyclerView.layoutManager = LinearLayoutManager(context)
         dataBinding.recyclerView.adapter = adapter
         dataBinding.recyclerView.addItemDecoration(
@@ -82,8 +85,7 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
             if (isRefresh) {
                 dataList.clear()
                 dataList.addAll(it.taskInfo)
-                adapter.data = dataList
-                adapter.notifyDataSetChanged()
+                adapter.setDiffNewData(it.taskInfo.toMutableList())
             } else {
                 dataList.addAll(it.taskInfo)
                 if (it.taskInfo.isEmpty()) {

@@ -73,6 +73,7 @@
         <activity android:name=".ui.workbench.hiddendanger.DangerDetailActivity" />
         <activity
             android:name=".ui.AppMainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask" />
 
         <provider

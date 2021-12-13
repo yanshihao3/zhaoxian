@@ -11,37 +11,23 @@ import androidx.recyclerview.widget.DiffUtil
  *
  * @create: 2021-07-26 17:32
  **/
-class DiffCallBack(
-    private val oldData: List<TaskModel.TaskInfo>,
-    private val newData: List<TaskModel.TaskInfo>
-) : DiffUtil.Callback() {
-
-    override fun getOldListSize(): Int {
-        return oldData.size
+class DiffCallBack : DiffUtil.ItemCallback<TaskModel.TaskInfo>() {
+    override fun areItemsTheSame(
+        oldItem: TaskModel.TaskInfo,
+        newItem: TaskModel.TaskInfo
+    ): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun getNewListSize(): Int {
-        return newData.size
+    override fun areContentsTheSame(
+        oldItem: TaskModel.TaskInfo,
+        newItem: TaskModel.TaskInfo
+    ): Boolean {
+
+        return oldItem.ZQIOT__taskName__CST == newItem.ZQIOT__state__CST &&
+                oldItem.name == newItem.name
+
     }
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        if (oldItemPosition == 0) {
-            return true
-        }
-        val old = oldData[oldItemPosition]
-        val new = newData[newItemPosition]
-        return old.id == new.id
-    }
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-
-        if (oldItemPosition == 0) {
-            return true
-        }
-        val old = oldData[oldItemPosition]
-        val new = newData[newItemPosition]
-        if (old.ZQIOT__taskName__CST != new.ZQIOT__taskName__CST) return false
-
-        return true
-    }
 }
