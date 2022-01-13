@@ -46,5 +46,7 @@ class MyApplication : BaseApplication() {
         MMKV.initialize(this)
         CrashReport.initCrashReport(this, "5ff8e15ad1", false)
 
+        CrashHandler.getInstance().init(applicationContext)
+
     }
 }

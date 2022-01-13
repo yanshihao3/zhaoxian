@@ -22,8 +22,8 @@ interface NoticeService {
     @POST("/baas/auth/v1.0/oauth2/token")
     suspend fun getToken(
         @Field("grant_type") grant_type: String = "client_credentials",
-        @Field("client_id") client_id: String = "df63c88a58e04ac1b894074e8314a162",
-        @Field("client_secret") client_secret: String = "de45ec4b5a60153d0c278f04e2d1e40ba8d869cbf94a9142"
+        @Field("client_id") client_id: String = "e3f88dd0d4034e41b260f2791c6ae8ee",
+        @Field("client_secret") client_secret: String = "fb9e39fc1dac10348f8ccfd89fb0fcfb6a066c490e56424f"
     ): TokenModel
 
 

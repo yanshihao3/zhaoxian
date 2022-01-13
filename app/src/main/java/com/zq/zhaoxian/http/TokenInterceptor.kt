@@ -1,9 +1,11 @@
 package com.zq.zhaoxian.http
 
+import android.util.Log
 import com.zq.base.BaseApplication
 import kotlinx.coroutines.*
 import okhttp3.Interceptor
 import okhttp3.Response
+import java.lang.Exception
 
 /**
  * @program: zhaoxian
@@ -38,15 +40,21 @@ class TokenInterceptor : Interceptor {
     }
 
     private fun getToken() {
-        runBlocking {
-            val deferred = async {
-                val token = HomeNetWork.getInstance().getToken().access_token
-                BaseApplication.access_token = token
-                token
+        try {
+            runBlocking {
+                val deferred = async {
+                    val token = HomeNetWork.getInstance().getToken().access_token
+                    BaseApplication.access_token = token
+                    token
+                }
+                try {
+                    deferred.await()
+                } catch (e: Exception) {
+
+                }
             }
-            deferred.await()
+        } catch (e: Exception) {
+            Log.e("TAG", "getToken:出现异常 ")
         }
-
     }
-
 }
