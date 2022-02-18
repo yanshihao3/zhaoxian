@@ -17,9 +17,9 @@ abstract class BaseAppViewModel : BaseViewModel() {
 
 
     fun getToken() {
-        launchGo({
-            BaseApplication.access_token = HomeNetWork.getInstance().getToken().access_token
-        })
+//        launchGo({
+//            BaseApplication.access_token = HomeNetWork.getInstance().getToken().access_token
+//        })
     }
 
 

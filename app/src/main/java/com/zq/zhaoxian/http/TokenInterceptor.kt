@@ -21,13 +21,16 @@ class TokenInterceptor : Interceptor {
         val request = chain.request()
         val response = chain.proceed(request)
         if (isTokenExpired(response)) {
-            response.close()
-            getToken()
-            val newRequest = chain.request()
-                .newBuilder()
-                .header("access-token", BaseApplication.access_token)
-                .build()
-            return chain.proceed(newRequest)
+            if (getToken()) {
+                response.close()
+                val newRequest = chain.request()
+                    .newBuilder()
+                    .header("access-token", BaseApplication.access_token)
+                    .build()
+                return chain.proceed(newRequest)
+            } else {
+                return response
+            }
         }
         return response
     }
@@ -39,22 +42,16 @@ class TokenInterceptor : Interceptor {
         return false
     }
 
-    private fun getToken() {
+    private fun getToken() =
         try {
             runBlocking {
-                val deferred = async {
-                    val token = HomeNetWork.getInstance().getToken().access_token
-                    BaseApplication.access_token = token
-                    token
-                }
-                try {
-                    deferred.await()
-                } catch (e: Exception) {
-
-                }
+                val token = HomeNetWork.getInstance().getToken().access_token
+                BaseApplication.access_token = token
+                true
             }
         } catch (e: Exception) {
             Log.e("TAG", "getToken:出现异常 ")
+            false
         }
-    }
+
 }

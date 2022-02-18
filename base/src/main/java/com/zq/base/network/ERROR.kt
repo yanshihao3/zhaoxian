@@ -7,21 +7,29 @@ package com.zq.base.network
 enum class ERROR(private val code: Int, private val err: String) {
 
     /**
+     * 401
+     */
+    TOKNE_ERROR(401, "获取token失败"),
+
+    /**
      * 未知错误
      */
     UNKNOWN(1000, "未知错误"),
+
     /**
      * 解析错误
      */
     PARSE_ERROR(1001, "解析错误"),
+
     /**
      * 网络错误
      */
     NETWORD_ERROR(1002, "网络错误"),
+
     /**
      * 协议出错
      */
-    HTTP_ERROR(1003, "协议出错"),
+    HTTP_ERROR(1003, "网络异常错误"),
 
     /**
      * 证书出错

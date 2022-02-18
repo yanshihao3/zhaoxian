@@ -19,7 +19,11 @@ object ExceptionHandle {
         if (e is ResponseThrowable) {
             ex = e
         } else if (e is HttpException) {
-            ex = ResponseThrowable(ERROR.HTTP_ERROR, e)
+            if (e.code() == 401) {
+                ex = ResponseThrowable(ERROR.TOKNE_ERROR, e)
+            } else {
+                ex = ResponseThrowable(ERROR.HTTP_ERROR, e)
+            }
         } else if (e is JsonParseException
             || e is JSONException
             || e is ParseException || e is MalformedJsonException
