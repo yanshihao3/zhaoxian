@@ -149,11 +149,11 @@ class HomeFragment @Inject constructor() :
 
         }
         viewModel.homeModel.observe(this) {
-            dataBinding.notice.text = it.notice.ZQIOT__title__CST
+            dataBinding.notice.text = it.notice?.ZQIOT__title__CST
             val workInfo = it.info
             list.clear()
             list.addAll(it.picture)
-            bannerAdapter.setDatas(list);
+            bannerAdapter.setDatas(list)
             bannerAdapter.notifyDataSetChanged()
             for (info in workInfo) {
                 if (info.type == "task") {
