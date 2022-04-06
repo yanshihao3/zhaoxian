@@ -30,13 +30,17 @@ class HomeNetWork {
 
     suspend fun queryHomeInfo(body: RequestBody) = mNoticeService.queryHomeInfo(body)
 
-    suspend fun queryTaskinfoByPersonId(body: RequestBody) = mNoticeService.queryTaskinfoByPersonId(body)
+    suspend fun queryTaskinfoByPersonId(body: RequestBody) =
+        mNoticeService.queryTaskinfoByPersonId(body)
 
-    suspend fun querySecurityTaskList(body: RequestBody) = mNoticeService.querySecurityTaskList(body)
+    suspend fun querySecurityTaskList(body: RequestBody) =
+        mNoticeService.querySecurityTaskList(body)
 
-    suspend fun queryhidderInfoBytaskId(body: RequestBody) = mNoticeService.queryhidderInfoBytaskId(body)
+    suspend fun queryhidderInfoBytaskId(body: RequestBody) =
+        mNoticeService.queryhidderInfoBytaskId(body)
 
-    suspend fun getSecurityTaskDetail(body: RequestBody) = mNoticeService.getSecurityTaskDetail(body)
+    suspend fun getSecurityTaskDetail(body: RequestBody) =
+        mNoticeService.getSecurityTaskDetail(body)
 
     suspend fun saveProcessWork(body: RequestBody) = mNoticeService.saveProcessWork(body)
 
@@ -48,6 +52,8 @@ class HomeNetWork {
     suspend fun queryWeather(url: String) = mNoticeService.queryWeather(url)
 
     suspend fun queryTouTiao(url: String) = mNoticeService.queryTouTiao(url)
+
+    suspend fun fileUpload(body: RequestBody) = mNoticeService.fileUpload(body)
 
     companion object {
 

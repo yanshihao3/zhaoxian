@@ -2,6 +2,7 @@ package com.zq.zhaoxian.ui.workbench.alarm
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.tencent.mmkv.MMKV
@@ -11,9 +12,7 @@ import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppFragmentAlarmWorkBinding
 import com.zq.zhaoxian.http.model.AlarmInfoEntry
 import com.zq.zhaoxian.http.model.UserInfo
-import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerDetailActivity
-import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerHandleActivity
-import com.zq.zhaoxian.ui.workbench.hiddendanger.TaskModel
+
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -51,15 +50,16 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
     var userId = ""
 
     var isFirst = false
-    
+
     val dataBinding by lazy {
         getDataBind()
     }
-    val viewModel by lazy { 
+    val viewModel by lazy {
         getViewModel()
     }
 
     override fun initView() {
+        adapter.setDiffCallback(DiffCallBack())
         dataBinding.recyclerView.layoutManager = LinearLayoutManager(context)
         dataBinding.recyclerView.adapter = adapter
         dataBinding.recyclerView.addItemDecoration(
@@ -81,10 +81,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
         }
         viewModel.data.observe(this) {
             if (isRefresh) {
-                dataList.clear()
-                dataList.addAll(it.list)
-                adapter.data = dataList
-                adapter.notifyDataSetChanged()
+                adapter.setDiffNewData(it.list.toMutableList())
             } else {
                 dataList.addAll(it.list)
                 if (it.list.isEmpty()) {
@@ -92,8 +89,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
                 } else {
                     dataBinding.refreshLayout.finishLoadMore()
                 }
-                adapter.data = dataList
-                adapter.notifyDataSetChanged()
+                adapter.addData(it.list)
             }
 
 
@@ -105,11 +101,12 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
         adapter.setOnItemChildClickListener { _, _, position ->
             if (param == "0") {
                 val intent = Intent(context, AlarmDetailHandleActivity::class.java)
-                intent.putExtra("data", dataList[position])
+                Log.e("TAG", "initData: ${adapter.data[position]}")
+                intent.putExtra("data", adapter.data[position])
                 startActivity(intent)
             } else {
                 val intent = Intent(context, AlarmDetailActivity::class.java)
-                intent.putExtra("data", dataList[position])
+                intent.putExtra("data", adapter.data[position])
                 startActivity(intent)
             }
         }

@@ -60,7 +60,7 @@ abstract class BasePermissionActivity<VM : BaseViewModel, DB : ViewDataBinding> 
                     )
                 }) { _, _ -> mCommonDialog!!.dismiss() }
         } else {
-            ToastUtils.show("获取权限失败成功")
+            ToastUtils.show("获取权限失败")
         }
     }
 

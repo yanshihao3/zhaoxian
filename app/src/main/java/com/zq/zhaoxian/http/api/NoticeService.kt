@@ -6,6 +6,7 @@ import com.zq.zhaoxian.http.model.*
 import com.zq.zhaoxian.ui.home.HomeModel
 import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerModel
 import com.zq.zhaoxian.ui.workbench.hiddendanger.TaskModel
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -83,7 +84,7 @@ interface NoticeService {
         @Body body: RequestBody
     ): BaseResult<AlarmInfoResult>
 
- /**
+    /**
      * 查询告警任务详情
      */
     @Headers("Content-Type: application/json", "Accept: */*")//需要添加头
@@ -91,6 +92,7 @@ interface NoticeService {
     suspend fun getSecurityTaskDetail(
         @Body body: RequestBody
     ): BaseResult<AlarmInfoDetailEntry>
+
     /**
      * 处理告警任务
      */
@@ -145,5 +147,12 @@ interface NoticeService {
      */
     @GET
     suspend fun queryTouTiao(@Url url: String): TouTiao
+
+    /**
+     *上传文件到minio中
+     */
+    @POST("/u-route/baas/sys/v1.1/connectors/objectstorageproxy/SmartCampus__FileOperator/putobject")
+    fun fileUpload(@Body body: RequestBody): String
+
 
 }

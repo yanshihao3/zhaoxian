@@ -61,8 +61,8 @@ class AlarmDetailActivity : BaseNoModelActivity<AppActivityAlarmDetailBinding>()
                 var alarmDetail: AlarmInfoDetailEntry? = null
                 withContext(Dispatchers.IO) {
                     val params = hashMapOf<String, Any>()
-                    params["alarmId"] = alarmInfoEntry!!.alarmId
-                    params["workOrderCode"] = alarmInfoEntry!!.taskNumber
+                    params["alarmId"] = alarmInfoEntry!!.alarmId!!
+                    params["workOrderCode"] = alarmInfoEntry!!.taskNumber!!
                     params["isEnd"] = true
                     alarmDetail =
                         HomeNetWork.getInstance()

@@ -83,18 +83,14 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
         }
         getViewModel().data.observe(this) {
             if (isRefresh) {
-                dataList.clear()
-                dataList.addAll(it.taskInfo)
                 adapter.setDiffNewData(it.taskInfo.toMutableList())
             } else {
-                dataList.addAll(it.taskInfo)
                 if (it.taskInfo.isEmpty()) {
                     dataBinding.refreshLayout.finishLoadMoreWithNoMoreData()
                 } else {
                     dataBinding.refreshLayout.finishLoadMore()
                 }
-                adapter.data = dataList
-                adapter.notifyDataSetChanged()
+                adapter.addData(it.taskInfo)
             }
 
 
@@ -106,11 +102,11 @@ class DangerFragment : BaseLazyFragment<DangerViewModel, AppFragmentDangerBindin
         adapter.setOnItemChildClickListener { _, _, position ->
             if (param == "0") {
                 val intent = Intent(context, DangerHandleActivity::class.java)
-                intent.putExtra("data", dataList[position])
+                intent.putExtra("data", adapter.data[position])
                 startActivity(intent)
             } else {
                 val intent = Intent(context, DangerDetailActivity::class.java)
-                intent.putExtra("data", dataList[position])
+                intent.putExtra("data", adapter.data[position])
                 startActivity(intent)
             }
         }

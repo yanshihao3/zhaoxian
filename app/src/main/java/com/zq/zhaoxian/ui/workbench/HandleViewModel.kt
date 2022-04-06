@@ -1,5 +1,6 @@
 package com.zq.zhaoxian.ui.workbench
 
+import android.R.attr
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.hjq.toast.ToastUtils
@@ -17,6 +18,9 @@ import okhttp3.RequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import okhttp3.MultipartBody
+
+import android.R.attr.path
 
 
 /**
@@ -116,7 +120,7 @@ class HandleViewModel : BaseAppViewModel() {
         launchGo({
             withContext(Dispatchers.IO) {
                 filePath.forEach {
-                    val string = uploadImage(it)
+                    val string = uploadImageMinio(it)
                     list.add(string)
                 }
                 updateWorkorder(id, "", "", list)
@@ -163,5 +167,16 @@ class HandleViewModel : BaseAppViewModel() {
         )
         obsClient.close()
         return putObjectResult.objectUrl
+    }
+
+    private suspend fun uploadImageMinio(filePath: String): String {
+        val file: File = File(filePath)
+        val fileRQ = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body: RequestBody = MultipartBody.Builder()
+            .addFormDataPart("object", "App/$filePath")
+            .addFormDataPart("object", file.name, fileRQ)
+            .build()
+        HomeNetWork.getInstance().fileUpload(body)
+        return "2"
     }
 }

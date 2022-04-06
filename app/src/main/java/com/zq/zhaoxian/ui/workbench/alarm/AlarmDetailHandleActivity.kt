@@ -32,9 +32,7 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
 
     override val layoutId: Int = R.layout.app_activity_alarm_detail_handle
 
-    val alarmInfoEntry by lazy {
-        intent.getParcelableExtra<AlarmInfoEntry>("data")
-    }
+    lateinit var alarmInfoEntry: AlarmInfoEntry
     val dataBinding by lazy {
         getDataBind()
     }
@@ -52,6 +50,8 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
         dataBinding.toolbar.setBackOnClickListener {
             finish()
         }
+        alarmInfoEntry = intent.getParcelableExtra("data")!!
+
         dataBinding.data = alarmInfoEntry
         dataBinding.recyclerView.layoutManager = GridLayoutManager(mActivityContext, 3)
         dataBinding.recyclerView.adapter = adapter
@@ -110,8 +110,8 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
                 var alarmDetail: AlarmInfoDetailEntry? = null
                 withContext(Dispatchers.IO) {
                     val params = hashMapOf<String, Any>()
-                    params["alarmId"] = alarmInfoEntry!!.alarmId
-                    params["workOrderCode"] = alarmInfoEntry!!.taskNumber
+                    params["alarmId"] = alarmInfoEntry!!.alarmId!!
+                    params["workOrderCode"] = alarmInfoEntry!!.taskNumber!!
                     params["isEnd"] = false
                     alarmDetail =
                         HomeNetWork.getInstance()
