@@ -7,6 +7,7 @@ import com.zq.base.BaseApplication
 import com.zq.base.network.HeaderInterceptor
 import com.zq.base.network.HttpLogInterceptor
 import com.zq.base.network.RetrofitClient
+import com.zq.base.utils.HttpsUtils
 import com.zq.zhaoxian.http.TokenInterceptor
 import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
@@ -29,6 +30,7 @@ class MyApplication : BaseApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        val sslParams = HttpsUtils.getSslSocketFactory()
 
         val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(20L, TimeUnit.SECONDS)
@@ -36,9 +38,13 @@ class MyApplication : BaseApplication() {
             .addInterceptor(HttpLogInterceptor.getInstance())
             .addInterceptor(TokenInterceptor())
             .writeTimeout(20L, TimeUnit.SECONDS)
+            .hostnameVerifier { _, _ ->
+                true
+            }
+            .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
             .build()
 
-        RetrofitClient.getInstance().setBaseUrl("https://studio.e.huawei.com/")
+        RetrofitClient.getInstance().setBaseUrl("https://172.100.25.201/")
             .setOkHttpClient(okHttpClient).init()
 
         registerActivityLifecycleCallbacks(MyActivityManager.getInstance())
