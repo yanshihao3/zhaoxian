@@ -46,7 +46,7 @@ class HomeViewModel : BaseViewModel() {
                         val asString = aCache.getAsString("weather")
                         val fromLocalJson =
                             GsonUtils.fromLocalJson<Weather>(asString, Weather::class.java)
-                        weather.value = fromLocalJson!!
+                        weather.postValue(fromLocalJson!!)
                     }
                 }
             } catch (e: Exception) {
@@ -70,14 +70,17 @@ class HomeViewModel : BaseViewModel() {
                         val asString = aCache.getAsString("toutiao")
                         val fromLocalJson =
                             GsonUtils.fromLocalJson<TouTiao>(asString, TouTiao::class.java)
-                        touTiaoData.value = fromLocalJson?.result?.data
+                        touTiaoData.postValue(fromLocalJson?.result?.data)
                     }
                 }
 
             } catch (e: Exception) {
                 val asString = aCache.getAsString("toutiao")
-                val fromLocalJson = GsonUtils.fromLocalJson<TouTiao>(asString, TouTiao::class.java)
-                touTiaoData.value = fromLocalJson?.result?.data
+                asString?.let {
+                    val fromLocalJson =
+                        GsonUtils.fromLocalJson<TouTiao>(asString, TouTiao::class.java)
+                    touTiaoData.value = fromLocalJson?.result?.data
+                }
             }
         }
     }
