@@ -6,6 +6,7 @@ import cn.jzvd.JzvdStd
 import com.zq.base.activity.BaseNoModelActivity
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.custommedia.JZMediaExo
+import com.zq.zhaoxian.custommedia.JZMediaIjk
 import com.zq.zhaoxian.databinding.AppActivityVideoPlayBinding
 
 
@@ -23,6 +24,7 @@ class VideoPlayActivity : BaseNoModelActivity<AppActivityVideoPlayBinding>() {
         window.decorView.setBackgroundResource(R.color.black)
 
         val path = intent.getStringExtra("path")
+
         dataBinding.videoplayer.setUp(
             path,
             "",

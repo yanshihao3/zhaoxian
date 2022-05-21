@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.ImageLoader
 import coil.load
 import com.google.gson.Gson
 import com.gyf.immersionbar.ktx.immersionBar
@@ -16,6 +17,7 @@ import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.CircleIndicator
 import com.zq.base.decoration.SpacesItemDecoration
 import com.zq.base.fragment.BaseLazyFragment
+import com.zq.base.utils.HttpsUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.common.MessageEvent
 import com.zq.zhaoxian.databinding.AppFragmentHomeBinding
@@ -26,6 +28,7 @@ import com.zq.zhaoxian.ui.workbench.alarm.AlarmWorkActivity
 import com.zq.zhaoxian.ui.workbench.hiddendanger.DangerActivity
 import com.zq.zhaoxian.ui.workbench.notice.NoticeActivity
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.OkHttpClient
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -54,6 +57,18 @@ class HomeFragment @Inject constructor() :
     private var userId: String = ""
     private var portalUserId: String = ""
 
+    val sslParams = HttpsUtils.getSslSocketFactory()
+    val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .hostnameVerifier { _, _ ->
+            true
+        }
+        .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+        .build()
+    val imageLoader by lazy<ImageLoader> {
+        ImageLoader.Builder(requireContext())
+            .okHttpClient(okHttpClient)
+            .build()
+    }
     private val bannerAdapter = object : BannerImageAdapter<String>(list) {
         override fun onBindView(
             holder: BannerImageHolder,
@@ -61,7 +76,7 @@ class HomeFragment @Inject constructor() :
             position: Int,
             size: Int
         ) {
-            holder.imageView.load(data)
+            holder.imageView.load(data, imageLoader)
         }
     }
 

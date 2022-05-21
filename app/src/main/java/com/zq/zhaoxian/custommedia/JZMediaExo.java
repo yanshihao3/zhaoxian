@@ -101,8 +101,7 @@ public class JZMediaExo extends JZMediaInterface implements Player.EventListener
              */
             DefaultHttpDataSourceFactory defaultHttpDataSourceFactory = new DefaultHttpDataSourceFactory();
             HttpDataSource.RequestProperties defaultRequestProperties = defaultHttpDataSourceFactory.getDefaultRequestProperties();
-            defaultRequestProperties.set("access-token", BaseApplication.getAccess_token());
-
+            //defaultRequestProperties.set("access-token", BaseApplication.getAccess_token());
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
                     defaultHttpDataSourceFactory);
            /* // Produces DataSource instances through which media data is loaded.
@@ -124,7 +123,7 @@ public class JZMediaExo extends JZMediaInterface implements Player.EventListener
             }
             simpleExoPlayer.addVideoListener(this);
 
-            Log.e(TAG, "URL Link = " + currUrl);
+            // Log.e(TAG, "URL Link = " + currUrl);
 
             simpleExoPlayer.addListener(this);
             Boolean isLoop = jzvd.jzDataSource.looping;

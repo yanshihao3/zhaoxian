@@ -7,11 +7,16 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import coil.ImageLoader
+import coil.decode.VideoFrameDecoder
+import coil.fetch.VideoFrameFileFetcher
+import coil.fetch.VideoFrameUriFetcher
 import coil.load
 import com.hjq.toast.ToastUtils
 import com.wanglu.photoviewerlibrary.PhotoViewer
 import com.zq.base.BaseApplication
 import com.zq.base.activity.BaseNoModelActivity
+import com.zq.base.utils.HttpsUtils
 import com.zq.zhaoxian.R
 import com.zq.zhaoxian.databinding.AppActivityAlarmDetailHandleBinding
 import com.zq.zhaoxian.http.HomeNetWork
@@ -23,6 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -31,7 +37,18 @@ import javax.inject.Inject
 class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHandleBinding>() {
 
     override val layoutId: Int = R.layout.app_activity_alarm_detail_handle
-
+    val sslParams = HttpsUtils.getSslSocketFactory()
+    val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .hostnameVerifier { _, _ ->
+            true
+        }
+        .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+        .build()
+    val imageLoader by lazy {
+        ImageLoader.Builder(this)
+            .okHttpClient(okHttpClient)
+            .build()
+    }
     lateinit var alarmInfoEntry: AlarmInfoEntry
     val dataBinding by lazy {
         getDataBind()
@@ -87,7 +104,7 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
                     .setIndicatorType(PhotoViewer.INDICATOR_TYPE_TEXT)
                     .setShowImageViewInterface(object : PhotoViewer.ShowImageViewInterface {
                         override fun show(iv: ImageView, url: String) {
-                            iv.load(url) {
+                            iv.load(url, imageLoader) {
                                 addHeader("access-token", BaseApplication.access_token)
                             }
                         }
@@ -119,9 +136,17 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
                 }
                 alarmDetail?.let {
                     it.imgList?.forEach { img ->
+                        img.path = img.path?.replace(
+                            "https://abc.hicampuscube.com/",
+                            "https://172.100.25.201/"
+                        )
                         data.add(img)
                     }
                     it.videoList?.forEach { video ->
+                        video.path = video.path.replace(
+                            "https://abc.hicampuscube.com/",
+                            "https://172.100.25.201/"
+                        )
                         data.add(video)
                     }
                     if (data.isEmpty()) {

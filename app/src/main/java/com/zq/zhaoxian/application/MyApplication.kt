@@ -12,6 +12,7 @@ import com.zq.zhaoxian.http.TokenInterceptor
 import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.HttpsURLConnection
 
 
 /**
@@ -43,6 +44,11 @@ class MyApplication : BaseApplication() {
             }
             .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
             .build()
+        /**
+         * 饺子播放器 忽略ssl证书
+         */
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslParams.sSLSocketFactory)
+        HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
 
         RetrofitClient.getInstance().setBaseUrl("https://172.100.25.201/")
             .setOkHttpClient(okHttpClient).init()

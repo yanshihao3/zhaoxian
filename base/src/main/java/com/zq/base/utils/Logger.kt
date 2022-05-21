@@ -4,7 +4,7 @@ package com.zq.base.utils
 import android.util.Log
 
 object Logger {
-    private var sEnabled = false
+    private var sEnabled = true
     private const val sDefaultTag = "Main"
 
     fun setEnabled(enabled: Boolean) {
