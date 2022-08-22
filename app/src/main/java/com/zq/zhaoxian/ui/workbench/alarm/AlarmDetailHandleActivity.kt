@@ -18,6 +18,7 @@ import com.zq.base.BaseApplication
 import com.zq.base.activity.BaseNoModelActivity
 import com.zq.base.utils.HttpsUtils
 import com.zq.zhaoxian.R
+import com.zq.zhaoxian.application.NetCommon
 import com.zq.zhaoxian.databinding.AppActivityAlarmDetailHandleBinding
 import com.zq.zhaoxian.http.HomeNetWork
 import com.zq.zhaoxian.http.model.AlarmInfoDetailEntry
@@ -126,9 +127,9 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
                 showLoading()
                 var alarmDetail: AlarmInfoDetailEntry? = null
                 withContext(Dispatchers.IO) {
-                    val params = hashMapOf<String, Any>()
-                    params["alarmId"] = alarmInfoEntry!!.alarmId!!
-                    params["workOrderCode"] = alarmInfoEntry!!.taskNumber!!
+                    val params = hashMapOf<String, Any?>()
+                    params["alarmId"] = alarmInfoEntry?.alarmId
+                    params["workOrderCode"] = alarmInfoEntry?.taskNumber
                     params["isEnd"] = false
                     alarmDetail =
                         HomeNetWork.getInstance()
@@ -138,14 +139,14 @@ class AlarmDetailHandleActivity : BaseNoModelActivity<AppActivityAlarmDetailHand
                     it.imgList?.forEach { img ->
                         img.path = img.path?.replace(
                             "https://abc.hicampuscube.com/",
-                            "https://172.100.25.201/"
+                            NetCommon.baseUrl
                         )
                         data.add(img)
                     }
                     it.videoList?.forEach { video ->
                         video.path = video.path.replace(
                             "https://abc.hicampuscube.com/",
-                            "https://172.100.25.201/"
+                            NetCommon.baseUrl
                         )
                         data.add(video)
                     }

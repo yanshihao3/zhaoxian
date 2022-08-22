@@ -15,10 +15,12 @@ import com.tencent.mmkv.MMKV
 import com.youth.banner.adapter.BannerImageAdapter
 import com.youth.banner.holder.BannerImageHolder
 import com.youth.banner.indicator.CircleIndicator
+import com.zq.base.BaseApplication
 import com.zq.base.decoration.SpacesItemDecoration
 import com.zq.base.fragment.BaseLazyFragment
 import com.zq.base.utils.HttpsUtils
 import com.zq.zhaoxian.R
+import com.zq.zhaoxian.application.NetCommon
 import com.zq.zhaoxian.common.MessageEvent
 import com.zq.zhaoxian.databinding.AppFragmentHomeBinding
 import com.zq.zhaoxian.http.model.TouTiao
@@ -76,7 +78,16 @@ class HomeFragment @Inject constructor() :
             position: Int,
             size: Int
         ) {
-            holder.imageView.load(data, imageLoader)
+            var dataUrl = data
+            if (data.contains("https://abc.hicampuscube.com/")) {
+                dataUrl = data.replace(
+                    "https://abc.hicampuscube.com/",
+                    NetCommon.baseUrl
+                )
+            }
+            holder.imageView.load(dataUrl, imageLoader) {
+                addHeader("access-token", BaseApplication.access_token)
+            }
         }
     }
 
@@ -315,6 +326,13 @@ class HomeFragment @Inject constructor() :
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MessageEvent) {
         if (event.type == "home") {
+            val defaultMMKV = MMKV.defaultMMKV()
+            val string = defaultMMKV.decodeString("userInfo")
+            if (string != null) {
+                val info = Gson().fromJson(string, UserInfo.Info::class.java)
+                userId = info.id
+                portalUserId = info.portalUser
+            }
             if (userId != "")
                 viewModel.queryHomeInfo(userId, portalUserId)
         }

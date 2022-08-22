@@ -106,6 +106,7 @@ class AlarmWorkFragment : BaseLazyFragment<AlarmViewModel, AppFragmentAlarmWorkB
                 startActivity(intent)
             } else {
                 val intent = Intent(context, AlarmDetailActivity::class.java)
+                Log.e("TAG", "initData: ${adapter.data[position]}")
                 intent.putExtra("data", adapter.data[position])
                 startActivity(intent)
             }

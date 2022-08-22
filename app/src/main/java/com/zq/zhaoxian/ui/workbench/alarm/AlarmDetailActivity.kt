@@ -2,6 +2,7 @@ package com.zq.zhaoxian.ui.workbench.alarm
 
 import android.app.ActivityOptions
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +17,9 @@ import com.wanglu.photoviewerlibrary.PhotoViewer
 import com.zq.base.BaseApplication
 import com.zq.base.activity.BaseNoModelActivity
 import com.zq.base.utils.HttpsUtils
+import com.zq.base.utils.Logger
 import com.zq.zhaoxian.R
+import com.zq.zhaoxian.application.NetCommon
 import com.zq.zhaoxian.databinding.AppActivityAlarmDetailBinding
 import com.zq.zhaoxian.http.HomeNetWork
 import com.zq.zhaoxian.http.model.AlarmInfoDetailEntry
@@ -89,7 +92,7 @@ class AlarmDetailActivity : BaseNoModelActivity<AppActivityAlarmDetailBinding>()
                     it.imgList?.forEach { img ->
                         img.path = img.path?.replace(
                             "https://abc.hicampuscube.com/",
-                            "https://172.100.25.201/"
+                            NetCommon.baseUrl
                         )
 
                         data.add(img)
@@ -97,7 +100,7 @@ class AlarmDetailActivity : BaseNoModelActivity<AppActivityAlarmDetailBinding>()
                     it.videoList?.forEach { video ->
                         video.path = video.path.replace(
                             "https://abc.hicampuscube.com/",
-                            "https://172.100.25.201/"
+                            NetCommon.baseUrl
                         )
                         data.add(video)
                     }
