@@ -50,7 +50,7 @@ class MyApplication : BaseApplication() {
         HttpsURLConnection.setDefaultSSLSocketFactory(sslParams.sSLSocketFactory)
         HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
 
-        RetrofitClient.getInstance().setBaseUrl(NetCommon.baseUrl)
+        RetrofitClient.getInstance().setBaseUrl(NetCommon.testUrl)
             .setOkHttpClient(okHttpClient).init()
 
         registerActivityLifecycleCallbacks(MyActivityManager.getInstance())
